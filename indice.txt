@@ -1,0 +1,44 @@
+1. Introduzione
+	1.1 L'azienda: descrizione del contesto aziendale
+	1.2 L'idea: breve descrizione dell'idea del progetto
+	1.3 Struttura del documento
+	
+2. Descrizione dello stage
+	2.1 Introduzione al progetto
+	2.2 Obiettivi formativi
+	2.3 Requisiti
+		2.3.1 Requisiti obbligatori
+		2.3.2 Requisiti desiderabili
+		2.3.3 Requisiti opzionali
+	2.4 Pianificazione 
+	
+3. Tecnologie e strumenti
+	3.1 Tecnologie per il back-end
+	3.2 Tecnologie per il front-end
+	3.3 Strumenti di supporto a progettazione e sviluppo
+	
+4. Descrizione del sistema esistente
+	4.1 Architettura serverless
+		4.1.1 Definizione di tabelle DynamoDB
+		4.1.2 Definizione di funzioni lambda
+		4.1.3 Deploy del back-end
+	4.2 Web-App
+		4.2.1 Funzionalità disponibli
+		4.2.2 Deploy sel front-end
+		
+			
+5. Integrazione di Amazon Rekognition
+	5.1 Presentazione del problema
+	5.2 Progettazione
+		5.2.1 Architettura
+			- funzionamento
+			- descrizione delle funzioni lambda implementate
+		5.2.2 Design dell'interfaccia
+	
+6. Integrazione di Amazon Lex
+	6.1 Presentazione del problema
+	6.2 Progettazione
+		6.2.1 Architettura
+		6.2.2 Design dell'interfaccia
+
+7. Conclusioni

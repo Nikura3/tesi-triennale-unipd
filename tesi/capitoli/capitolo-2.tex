@@ -1,0 +1,70 @@
+% !TEX encoding = UTF-8
+% !TEX TS-program = pdflatex
+% !TEX root = ../tesi.tex
+
+%**************************************************************
+\chapter{Descrizione dello stage}
+\label{cap:descrizione-stage}
+%**************************************************************
+
+%**************************************************************
+\section{Introduzione al progetto}
+In \azienda è stata creata una piattaforma denominata MariBa con lo scopo di registrare i risultati di gioco del personale a Mario Kart e calcetto balilla. Tale piattaforma è dotata di un sistema di intelligenza artificiale che, in base ai giocatori (o alle coppie nel caso del calcetto), è in grado di predire il risultato del match di gioco. Il limite della
+piattaforma attuale è che tutti i dati, dall'inizializzazione di una partita ai risultati finali, devono essere inseriti
+manualmente. \\
+
+Al fine di rendere più immediato l'inserimento dei dati si vuole evolvere la piattaforma includendo le seguenti funzionalità:
+\begin{itemize}
+	\item Sistema di \gls{image recognition} pe riconoscere i giocatori e ruoli durante la fase di inizializzazione della partita
+	e formazione delle squadre;
+	\item Servizio vocale per l'inserimento dei risultati dei match giocati.
+\end{itemize}
+
+
+%**************************************************************
+\section{Obiettivi formativi}
+	Gli obiettivi formativi dell'attività di stage sono i seguenti:
+	\begin{itemize}
+		\item Apprendere come sviluppare un applicativo web con controlli vocali;
+		\item Apprendere come svolgere attività di integrazione con servizi di Machine Learning in ambito \gls{image recognition}, \gls{automatic speech recognition} (ASR) e \gls{natural language understanding} (NLU);
+	\end{itemize}
+%**************************************************************
+
+\section{Requisiti}
+Nel primo giorno di stage si è svolto un incontro con il tutor aziendale ed il product owner per definire in modo dettagliato i requisiti. Nel corso dello stage il livello di obbligatorietà di tali requisiti è variato in risposta alle esigenze dell'azienda. \\
+ Di seguito viene riportata la versione finale dell'analisi effettuata.
+
+	\subsection{Requisiti obbligatori}
+		Di seguito vengono elencati i requisiti obbligatori:
+		\begin{itemize}
+			\item Sviluppo di un micro-servizio per le attività di \emph{face detection} e \emph{recognition};
+			\item Sviluppo di un micro-servizio per le attività di controllo vocale via web
+		\end{itemize}
+	\subsection{Requisiti desiderabili}
+		Di seguito vengono elencati i requisiti desiderabili:
+		\begin{itemize}
+			\item Integrazione di un nuovo gioco all'interno della piattaforma;
+			\item Implementazione di una versione semplificata per l'inserimento dei dati di Mario Kart per l'utilizzo
+			della piattaforma in occasione del Summit \gls{AWS} di Milano.
+		\end{itemize}
+	\subsection{Requisiti facoltativi}
+		Di seguito vengono elencati i requisiti facoltativi:
+		\begin{itemize}
+			\item Sviluppo di una \gls{skill} Alexa con le stesse funzionalità del \gls{chatbot} vocale richiesto come requisito obbligatorio e integrato sulla piattaforma web.
+		\end{itemize}
+
+%**************************************************************
+\section{Pianificazione}
+La durata complessiva dello stage è stata di 8 settimane di lavoro a tempo pieno per un totale di circa 320 ore.
+Le attività sono state distribuite nel seguente modo:
+\begin{itemize}
+	\item una settimana di studio delle tecnologie necessarie;
+	\item due settimane di progettazione e sviluppo di un micro servizio per attività di \emph{face detection} per 
+	la creazione di squadre di gioco e integrazione con la piattaforma esistente;
+	\item una settimana di sviluppo e integrazione nella piattaforma esistente di una sezione del sito per l'inserimento dei risultati di un nuovo gioco;
+	\item tre settimane di progettazione e sviluppo di un micro servizio per il controllo vocale e integrazione con la piattaforma esistente;
+	\item una settimana di stesura della documentazione di progetto delle attività di sviluppo condotte nelle settimane
+	precedenti;
+\end{itemize}
+Durante tutta la durata dello stage sono stati effettuati stand-up giornalieri con il tutor aziendale in affiancamento per 
+monitorare lo stato di avanzamento ed evidenziare eventuali problemi sorti.

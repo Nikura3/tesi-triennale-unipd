@@ -1,0 +1,170 @@
+% !TEX encoding = UTF-8
+% !TEX TS-program = pdflatex
+% !TEX root = ../tesi.tex
+
+%**************************************************************
+\chapter{Tecnologie e strumenti}
+\label{cap:tecnologie}
+%**************************************************************
+
+In questo capitolo vengono presentate le tecnologie utilizzate durante lo stage.\\
+
+%**************************************************************
+\section{Tecnologie per il back-end}
+	\subsection{Serverless Framework}
+	\emph{Serverless Framework} è un \gls{framework} web che permette di costruire applicazioni \gls{serverless} basate sul concetto \gls{FaaS}. Esso permette di definire funzioni Lambda e infrastrutture \gls{AWS} utilizzando sintassi \gls{YAML}.
+	Per effettuare il \gls{deploy} delle Lambda, delle tabelle DynamoDB e dei bucket S3 deifiniti sarà sufficiente eseguire il comando \texttt{serverless deploy}.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=5cm]{immagini/serverless.png} \\
+		\caption{\label{fig:logo_serverless} Logo Serverless Framework}
+	\end{figure}
+	
+	\subsection{Node.js}
+	Node.js è un ambiente runtime open source per l'esecuzione di codice JavaScript all'esterno di browser web. Esso consente infatti di utilizzare JavaScript come linguaggio di programmazione lato server. All'interno del progetto
+	viene utilizzata la versione 12.x per compatibilità con il codsce già presente.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=3.3cm]{immagini/nodejs.png} \\
+		\caption{\label{fig:logo_node} Logo Node.js}
+	\end{figure}
+	
+	\subsection{AWS Lambda}
+	AWS Lambda è un servizio di calcolo serverless che permette l'esecuzione di codice per qualsiasi tipo di applicazione o servizio back-end senza bisogno di gestire un'infrastruttura server. Lambda gestisce le risorse di elaborazione scalando automaticamente in risposta alla potenza di calcolo richiesta. Il linguaggio utilizzato per lo
+	sviluppo di funzioni Lambda è \emph{Node.js v12.x}.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=2.3cm]{immagini/aws-lambda.png} \\
+		\caption{\label{fig:logo_lambda} Logo AWS Lambda}
+	\end{figure}
+	
+	\subsection{Amazon API Gateway}
+	API Gateway è un servizio Amazon che consente di creare API RESTful per permettere una comunicazione bidirezionale in tempo reale tra applicazioni e servizi di back-end. Le \gls{API} definite nell'applicazione sviluppata sono state
+	integrate alle rispettive funzioni Lambda.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=2.2cm]{immagini/api-gateway.png} \\
+		\caption{\label{fig:logo_apigateway} Logo Amazon API Gateway}
+	\end{figure}
+	
+	\subsection{Amazon DynamoDB}
+	DynamoDB è un database \gls{NoSQL}, serverless, completamente gestito che supporta l'inserimento di dati di tipo documento o di tipo chiave-valore. Facendo parte della famiglia di servizi messi a disposizione da Amazon, DynamoDB si integra senza
+	difficoltà con tutti i servizi \gls{AWS} e Amazon.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=2.5cm]{immagini/DynamoDB.png} \\
+		\caption{\label{fig:logo_dynamoDB} Logo Amazon DynamoDB}
+	\end{figure}
+	
+	\subsection{Amazon S3}
+	\emph{Amazon Simple Storage Service} (S3) è un servizio di archiviazione oggetti scalabile, sicuro e con ottime prestazioni. Al suo interno i dati sono organizzati in \emph{bucket}. All'interno di ogni bucket è possibile definire dei prefissi per poter organizzare al meglio gli oggetti caricati. \\
+	All'intero del progetto questo servizio è stato utilizzato per effettuare l’hosting della Web App e per il trasferimento indiretto di immagini e audio tra front-end e back-end.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=2.4cm]{immagini/amazon-s3.png} \\
+		\caption{\label{fig:logo_s3} Logo Amazon S3}
+	\end{figure}
+
+	
+	\subsection{Amazon Rekognition}
+	Amazon Rekognition è un software \emph{cloud-based} che mette a disposizione capacità di visione artificiale pre-addestrate e personalizzabili per estrarre informazioni dettagliate da immagini e video. Alcuni esempi di utilizzo sono la moderazione di contenuti e \emph{sentiment analysis}.\\ 
+	All'interno del progetto è stato utilizzato per implementare la ricerca facciale per il riconoscimento dei giocatore in fase di inizializzazione di una partita.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=2.5cm]{immagini/rekognition.png} \\
+		\caption{\label{fig:logo_rekognition} Logo Amazon Rekognition}
+	\end{figure}
+	
+	\subsection{Amazon Lex}
+	Amazon Lex è un servizio di intelligenza artificiale completamente gestito che mette a disposizione modelli avanzati di linguaggio naturale per permettere lo sviluppo di interfacce di comunicazione all'interno di applicazioni software. Nel progetto è stato utilizzato per implementare un chatbot vocale per interagire con MariBa e registrare i risultati delle partite giocate.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=2.4cm]{immagini/lex.png} \\
+		\caption{\label{fig:logo_lex} Logo Amazon Lex}
+	\end{figure}
+
+\section{Tecnologie per il front-end}
+	\subsection{TypeScript}
+	TypeScript è un linguaggio di programmazione sviluppato e manutenuto da Microsoft. \\
+	Esso è un estensione del linguaggio di programmazione JavaScript: utilizza la stessa sintassi ma con l'aggiunta del supporto alla tipizzazione e alle interfacce. 
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=2cm]{immagini/typescript.png} \\
+		\caption{\label{fig:logo_typescript} Logo TypeScript}
+	\end{figure}
+
+	\subsection{Angular}
+	Angular è un framework open-source sviluppato da Google. Esso permette lo sviluppo di applicazioni web organizzate in componenti attraverso l'utilizzo di TypeScript, \gls{HTML} e \gls{CSS}.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=2.5cm]{immagini/angular.png} \\
+		\caption{\label{fig:logo_angular} Logo Angular}
+	\end{figure}
+
+	\subsection{Nebular}
+	Nebular è una libreria di Angular gratuita e open-source per la creazione di interfacce utente.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1.8cm]{immagini/nebular.png} \\
+		\caption{\label{fig:logo_nebular} Logo Nebular}
+	\end{figure}
+
+
+\section{Strumenti di supporto a progettazione e codifica}
+	\subsection{Git}
+	\emph{Git} è un sistema di \gls{controllo di versione} distribuito. \emph{Git} permette di tenere traccia di tutte le modifiche avvenute all'interno di un progetto o di un singolo file associando a ciascuna di esse il relativo autore. Permette inoltre di tornare ad una versione precedente del software eliminando le modifiche effettuate successivamente allo stato desiderato. Tutto ciò rende più semplice la collaborazione tra sviluppatori nella stesura del codice surante la fase di sviluppo software.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=2cm]{immagini/git.png} \\
+		\caption{\label{fig:logo_git} Logo Git}
+	\end{figure}
+
+	\subsection{AWS CodeCommit}
+	CodeCommit è un servizio gestito altamente scalabile e sicuro che consente l'hosting di \gls{repository} \emph{Git} privati. Esso custodisce i \gls{repository} nel cloud \gls{AWS} e supporta tutti i comandi \emph{Git}. Si è scelto di utilizzare CodeCommit rispetto ad altri servizi equivalenti per compatibilità con la politica aziendale.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=2cm]{immagini/codecommit.png} \\
+		\caption{\label{fig:logo_codecommit} Logo AWS CodeCommit}
+	\end{figure}
+
+	\subsection{VisualStudio Code}
+	Visual Studio Code (VS Code) è un editor per il codice sorgente sviluppato da Microsoft. Esso permette il controllo per \emph{Git} integrato e mette a disposizione numerose estensioni per facilitare la stesura del codice. Un esempio è \emph{Prettier}, estensione che automatizza la formattazione del codice in modo da mantenerlo ordinato e con uno stile consistente.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=2cm]{immagini/visual-studio-code.png} \\
+		\caption{\label{fig:logo_vscode} Logo Visual Studio Code}
+	\end{figure}
+
+	\subsection{Balsamiq Wireframes}
+	\emph{Balsamiq Wireframes} è uno strumento grafico per la creazione di schizzi per interfacce utente e schermate (\emph{wireframes}) di siti web e applicazioni. Durante lo stage è stata utilizzata la versione cloud. I wireframes creati sono stati revisionati dal tutor aziendale, il quale ha potuto inserire commenti sulle modifiche da apportare. 
+	
+		\begin{figure}[H]
+		\centering
+		\includegraphics[width=2cm]{immagini/balsamiq.png} \\
+		\caption{\label{fig:logo_balsamiq} Logo Balsamiq}
+	\end{figure}
+	
+
+
+
+
+
+
+
+
+
+
