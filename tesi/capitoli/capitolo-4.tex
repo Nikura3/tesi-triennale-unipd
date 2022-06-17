@@ -10,11 +10,17 @@
 In questo capitolo viene descritto l'applicativo preesistente le cui funzionalità sono state estese durante lo stage.\\
 
 \section{Architettura serverless}
-	\subsection{Definizione di una tabella DynamoDB}
-	\subsection{Definizione di una funzione Lambda}
-	\subsection{Definizione di un bucket S3}
+L'architettura della web app è basata sul \emph{Serverless Framework}, un \gls{framework} che permette di costruire architetture \gls{serverless}. Esso consente inoltre di definire l'architettura \gls{AWS} attraverso un file in formato \gls{YAML}. \\
+ Nei paragrafi seguenti vengono mostrati alcuni esempi della sintassi per la definizione delle infrastrutture necessarie ai nuovi servizi implementati. \\
+ Viene inoltre mostrato il procedimento da seguire per effettuare il \gls{deploy} della struttura \gls{serverless}.
+	\subsection{Definizione delle resources}
+		\subsubsection{Tabelle DynamoDB}
+		\subsubsection{Bucket S3}
+	\subsection{Definizione delle funzioni Lambda}
 	\subsection{Deploy del back-end}
 
 \section{Web-App}
+La web app è realizzata utilizzando \emph{Angular 12.x} in collaborazione con \emph{Nebular}, libreria per la realizzazione di interfacce utente. \\
+Nei paragrafi successivi vengono descritte le funzionalità già presenti all'interno dell'applicativo prima dell'integrazione e viene mostrato come effettuare il \gls{deploy} delle modifiche effettuate al front-end.
 	\subsection{Funzionalità disponibili}
 	\subsection{Deploy del front-end}
