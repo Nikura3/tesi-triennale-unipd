@@ -3,20 +3,69 @@
 % !TEX root = ../tesi.tex
 
 %**************************************************************
-\chapter{Descrizione dell'applicativo esistente}
+\chapter{Descrizione dell'applicativo}
 \label{cap:applicazione}
 %**************************************************************
 
-In questo capitolo viene descritto l'applicativo preesistente le cui funzionalità sono state estese durante lo stage.\\
+In questo capitolo viene descritto l'applicativo le cui funzionalità sono state estese durante lo stage.\\
 
 \section{Architettura serverless}
 L'architettura della web app è basata sul \emph{Serverless Framework}, un \gls{framework} che permette di costruire architetture \gls{serverless}. Esso consente inoltre di definire l'architettura \gls{AWS} attraverso un file in formato \gls{YAML}. \\
- Nei paragrafi seguenti vengono mostrati alcuni esempi della sintassi per la definizione delle infrastrutture necessarie ai nuovi servizi implementati. \\
- Viene inoltre mostrato il procedimento da seguire per effettuare il \gls{deploy} della struttura \gls{serverless}.
+ Nei paragrafi seguenti vengono mostrati alcuni esempi della sintassi per la definizione delle infrastrutture necessarie ai nuovi servizi implementati ed il procedimento da seguire per effettuare il \gls{deploy} della struttura \gls{serverless}.
 	\subsection{Definizione delle resources}
+	Attraverso la direttiva \emph{ Resources} è possibile definire le risorse a cui le funzioni \emph{Lambda} possono accedere, ovvero tabelle \emph{DynamoDB} e \emph{bucket S3} .
+	
 		\subsubsection{Tabelle DynamoDB}
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=11cm]{immagini/tabellaDB.png} \\
+			\caption{\label{fig:tabellaDB} Esempio del codice per la creazione di una tabella DynamoDB}
+		\end{figure}
+		
+		Nel codice sopra riportato:
+		\begin{itemize}
+			\item \textbf{Type} definisce il tipo di risorsa da creare;
+			\item \textbf{TableName} indica il nome della tabella riportato nei servizi \gls{AWS};
+			\item \textbf{AttributeDefinitions} descrive gli attributi che compongono la chiave primaria;
+			\item \textbf{KeySchema} definisce la struttura della chiave primaria. Nell'esempio la chiave è composta da un solo attributo ma DynamoDB permette di definire anche chiavi più complesse;
+			\item \textbf{ProvisionedThroughput} specifica il numero di letture e scritture permesse della risorsa.
+		\end{itemize}
+
 		\subsubsection{Bucket S3}
+			
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=11cm]{immagini/bucketS3.png} \\
+			\caption{\label{fig:bucketS3} Esempio del codice per la creazione di un bucket S3}
+		\end{figure}
+	
+		Nel codice sopra riportato:
+		\begin{itemize}
+			\item \textbf{Type} definisce il tipo di risorsa da creare;
+			\item \textbf{BucketName} indica il nome del \emph{bucket} riportato nei servizi \gls{AWS};
+			\item \textbf{AccessControl} specifica i permessi di accesso al \emph{bucket};
+			\item \textbf{LifeCycleConfiguration} permette di definire delle regole per il ciclo di vita degli oggetti all'interno del bucket. Nel caso riportato sono state definite due regole per due diversi prefissi all'interno del \emph{bucket} (\emph{audioExpiration} e \emph{imageExpiration}) entrambe con durata di un giorno;
+			\item \textbf{CorsConfiguration} descrive le configurazione per le \gls{CORS} per gli oggetti del \emph{bucket}.
+		\end{itemize}
+	
 	\subsection{Definizione delle funzioni Lambda}
+	Per definire le funzioni \emph{Lambda} viene utilizzata la direttiva \emph{functions}. 
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=11cm]{immagini/lambda.png} \\
+		\caption{\label{fig:lambda} Esempio del codice per la creazione di una funzione Lambda}
+	\end{figure}
+
+	Nel codice sopra riportato:
+	\begin{itemize}
+		\item \textbf{handler} è il riferimento al file contenente il codice della funzione; 
+		\item \textbf{events} indica gli eventi che causano l'esecuzione della funzione \emph{Lambda}. Specificando \item \textbf{Http} permette di definire degli API Gateway HTTP endpoint che quando chiamati provocano l'esecuzione della funzione;
+		\item \textbf{path} definisce il path dell'endpoint e identifica la risorsa;
+		\item \textbf{method} indica il tipo di accesso HTTP permesso;
+		\item \textbf{cors} abilita le \gls{CORS}.
+	\end{itemize}
+	
 	\subsection{Deploy del back-end}
 
 \section{Web-App}
