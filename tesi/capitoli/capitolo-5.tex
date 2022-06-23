@@ -33,7 +33,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 	
 	\subsubsection{Amazon Rekognition}
 	
-	\emph{Amazon Rekognition} è un software \emph{cloud-based} che mette a disposizione capacità di visione artificiale pre-addestrate e personalizzabili per estrarre informazioni dettagliate da immagini e video. Nel caso del progetto è stato utilizzato per indicizzare le facce e permetterne quindi il riconoscimento. In particolare, tutte le facce sono state salvate all'interno di una raccolta (\emph{collection}) ed a ciascuna di esse è stato assegnare un ID univoco (\emph{faceId}). Per effettuare un riconoscimento si procede ad una ricerca di eventuali corrispondenze all'interno di tale \emph{collection} . \\
+	\emph{Amazon Rekognition} è un software \emph{cloud-based} che mette a disposizione capacità di visione artificiale pre-addestrate e personalizzabili per estrarre informazioni dettagliate da immagini e video. Nel caso del progetto è stato utilizzato per indicizzare le facce e permetterne quindi il riconoscimento. In particolare, tutte le facce sono state salvate all'interno di una raccolta (\emph{collection}) ed a ciascuna di esse è stato assegnato un ID univoco (\emph{faceId}). Per effettuare un riconoscimento si procede ad una ricerca di eventuali corrispondenze all'interno di tale \emph{collection} . \\
 	Di seguito sono elencate le funzioni utilizzate:
 	\begin{itemize}
 		\item \texttt{DetectFaces}: individua le cento facce di dimensione maggiore presenti nell'immagine. Per ogni viso individuato ne restituisce i dettagli, in particolare la \emph{bounding box};
@@ -45,16 +45,6 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 	\subsubsection{S3}
 	\emph{Amazon Simple Storage Service} (S3) è un servizio di archiviazione oggetti. Al suo interno i dati sono organizzati in \emph{bucket}. All'interno di ogni \emph{bucket} è possibile definire dei prefissi per poter organizzare al meglio gli oggetti caricati (simile al concetto di "cartella"). \\ 
 	Per evitare un passaggio diretto delle immagini tra front-end e back-end si è utilizzato un \emph{bucket}. S3 infatti fornisce la possibilità di generare un URL per effettuare operazioni di \emph{upload} o \emph{download} in una specifica posizione all'interno del \emph{bucket} senza necessità di autenticazione. In particolare viene effettuata la seguente operazione:
-%	\begin{Verbatim}[tabsize=2]
-%		const params = {
-%			Bucket: process.env.UPLOAD_BUCKET, 
-%			Key: data.fileName, 
-%			Expires: 3600,
-%			ContentType: data.fileType,
-%		};
-%		
-%		const signedUrl = await s3.getSignedUrl("putObject", params);
-%	\end{Verbatim}
 
 	\begin{figure}[H]
 		\centering
@@ -133,8 +123,8 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 	\subsection{Design dell'interfaccia}
 	Per il design dell'interfaccia, prima della sua effettiva codifica, sono stati realizzati dei \emph{wireframes} utilizzando \textbf{Balsamiq}. In questo modo si è potuto definire il flusso di funzionamento a livello di front-end. \\ 
 
-	\noindent Successivamente, la realizzazione dell'interfaccia è avvenuta utilizzando \textbf{Angular 12.x} in combinazione con la libreria 
-	\textbf{Nebular}, specifica per lo sviluppo di interfacce utente. \\
+	\noindent Successivamente, la realizzazione dell'interfaccia è avvenuta utilizzando \emph{Angular 12.x} in combinazione con la libreria 
+	\emph{Nebular}, specifica per lo sviluppo di interfacce utente. \\
 	
 	\noindent Nei paragrafi seguenti viene mostrata l'interfaccia realizzata per l'inserimento dei giocatori attraverso l'utilizzo della funzionalità di riconoscimento.
 	
