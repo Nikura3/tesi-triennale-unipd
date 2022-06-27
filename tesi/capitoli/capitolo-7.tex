@@ -31,7 +31,7 @@
 		
 		\hline
 		
-		100 & 2, 3, 4 &
+		80 & 2, 3 &
 		\begin{itemize}[leftmargin=*]
 			\item Progettazione e sviluppo di un micro-servizio per attività di \emph{face detection} per 
 			la creazione di squadre di gioco;
@@ -40,7 +40,7 @@
 		
 		\hline
 		
-		40 & 4, 5 &
+		40 & 4 &
 		\begin{itemize}[leftmargin=*]
 			\item Progettazione e sviluppo di una sezione del sito per l'inserimento dei risultati di un nuovo gioco;
 			\item Integrazione con la piattaforma esistente. 
@@ -53,6 +53,14 @@
 			\item Progettazione e sviluppo di un micro-servizio per il controllo vocale;
 			\item Integrazione con la piattaforma esistente. 
 		\end{itemize}  \\
+		
+		\hline 
+		
+		20 & 7 &
+		\begin{itemize}[leftmargin=*]
+			\item Progettazione e implementazione di una versione semplificata della pagina per l'inserimento delle 
+			partite di Mario Kart da utilizzare in occasione del Summit \gls{AWS} di Milano.
+		\end{itemize} \\
 		
 		\hline
 		
@@ -69,7 +77,7 @@
 		\hline
 		
 		
-		\caption{Pianificazione delle attività}
+		\caption{Consuntivo finale}
 	\end{longtable}
 	
 	
@@ -77,9 +85,145 @@
 
 %**************************************************************
 \section{Raggiungimento degli obiettivi}
+Durante il progetto di stage sono stati soddisfatti tutti i requisiti obbligatori. \\
+Il tempo pianificato per la formazione iniziale e la realizzazione del sistema di riconoscimento dei giocatori è stato adeguato. \\
+Ha invece richiesto più tempo del previsto l'implementazione del \gls{chatbot} vocale, avendo incontrato alcune difficoltà nell'interpretazione non sempre corretta da parte del bot dei nickname dei giocatori pronunciati dall'utente.
+Oltre a quelli classificati obbligatori, sono stati soddisfatti anche tutti i requisiti desiderabili. Sono state quindi aggiunte due pagine al sito: 
+\begin{itemize}
+	\item Una per l'inserimento dei risultati di gioco a Duck Game;
+	\item Una per l'inserimento più rapido delle partite di Mario Kart attraverso riconoscimento facciale. Questa
+	funzionalità ha permesso l'utilizzo del prodotto allo stand di \azienda in occasione del Summit \gls{AWS} tenutosi a Milano durante gli ultimi giorni di stage.
+\end{itemize}
+
+\noindent Per quanto riguarda invece i requisiti facoltativi, non vi è stato il tempo necessario alla loro implementazione. \\
+
+\noindent Il raggiungimento degli obiettivi, rappresentato dal grado di implementazione dei requisiti, è schematizzato in \autoref{tab:tracciamento} e \autoref{tab:completamento}.
+
+\begin{center}
+	
+	\renewcommand{\arraystretch}{1.5}
+	
+	\centering
+	\begin{longtable}{| C{2.5cm} | C{4cm} |}
+		
+		\hline
+		
+		\rowcolor{lighter-bugBlue}
+		\textbf{Requisito} &  \textbf{Stato} \\
+		
+		\hline
+		
+		\texttt{RO-1} & Implementato \\
+		
+		\hline 
+		
+		\texttt{RO-1.1} & Implementato \\
+		
+		\hline 
+		
+		\texttt{RO-1.2} & Implementato \\
+		
+		\hline 
+		
+		\texttt{RO-1.3} & Implementato \\
+		
+		\hline
+		
+		\texttt{RO-1.4} & Implementato  \\
+		
+		\hline 
+		
+		\texttt{RO-1.5} & Implementato \\
+		
+		\hline 
+		
+		\texttt{RO-1.6} & Implementato  \\
+		
+		\hline 
+		
+		\texttt{RO-2} &Implementato  \\
+		
+		\hline 
+		
+		\texttt{RO-2.1} & Implementato  \\
+		
+		\hline 
+		
+		\texttt{RO-2.2} & Implementato  \\
+		
+		\hline
+		
+		\texttt{RD-1} & Implementato  \\
+		
+		\hline 
+		
+		\texttt{RD-1.1} &Implementato  \\
+		
+		\hline 
+		
+		\texttt{RD-1.2} & Implementato \\
+		
+		\hline 
+		
+		\texttt{RD-1.3} & Implementato  \\	
+	
+		\hline 
+		
+		\texttt{RD-2} & Implementato  \\
+		
+		\hline 
+		
+		\texttt{RF-1} & Non Implementato \\
+		
+		\hline 
+		
+		\caption{Tracciamento dei requisiti}\label{tab:tracciamento}
+	\end{longtable}
+	
+	
+\end{center}
+
+\begin{center}
+	
+	\renewcommand{\arraystretch}{1.5}
+	
+	\centering
+	\begin{longtable}{| C{2.5cm} | C{4cm} |}
+		
+		\hline
+		
+		\rowcolor{lighter-bugBlue}
+		\textbf{Requisiti} &  \textbf{Completamento} \\
+		
+		\hline
+		
+		\textbf{Obbligatori} & 100\% \\
+		
+		\hline 
+		
+		\textbf{Desiderabili} & 100\% \\
+		
+		\hline 
+		
+		\textbf{Facoltativi} & 0\% \\
+		
+		\hline 
+		
+		\caption{Completamento dei requisiti}\label{tab:completamento}
+	\end{longtable}
+	
+	
+\end{center}
 
 %**************************************************************
-\section{Conoscenze acquisite}
+\section{Conoscenze acquisite e valutazione personale}
+Durante le otto settimane di stage ho avuto modo di apprendere moltissimo, sia a livello di hard-skill che di soft-skill.
 
-%**************************************************************
-\section{Valutazione personale}
+\noindent Ho avuto modo non solo di studiare tecnologie che non avevo mai utilizzato (come ad esempio \gls{AWS} e \emph{Angular}), ma anche di approfondire e affinare le conoscenze che durante questi anni di università avevo acquisito.\\
+
+\noindent Ho imparato inoltre a comunicare in modo più efficace non solo le mie idee ma anche le mie difficoltà, in modo che altri potessero aiutarmi e consigliarmi. Mi ha aiutato anche a comprendere meglio il funzionamento corretto e proficuo di un rapporto collaborativo tra colleghi con lo scopo i raggiungere un obiettivo comune.
+
+\noindent Questo progetto di stage mi ha permesso di sperimentare, mettermi alla prova e utilizzare la mia creatività per 
+realizzare un prodotto finale che incontrasse le aspettative dell'azienda. \\
+
+\noindent Valuto dunque molto positivamente l'esperienza di stage svolta presso \azienda poiché mi ha permesso di entrare in contatto con un ambiente lavorativo reale che mi ha permesso di mettere a frutto le mie conoscenze pregresse e svilupparne di nuove.

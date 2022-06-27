@@ -7,7 +7,7 @@
 \label{cap:rekognition}
 %**************************************************************
 
-In questo capitolo viene approfondito lo sviluppo e l'integrazione del sistema di image recognition\\
+In questo capitolo viene approfondito lo sviluppo e l'integrazione all'interno dell'applicativo del sistema di image recognition.\\
 
 %**************************************************************
 
@@ -19,11 +19,11 @@ risultava laborioso ed è stata quindi espressa la necessità di velocizzare tal
 L'idea è quella di scattare una foto ai giocatori partecipanti in modo tale che l'applicazione li riconosca in modo automatico.
 
 \section{Progettazione}
-In questa sezione vengono descritti l'architettura ed il funzionamento del servizio di riconoscimento facciale implementato. \\
-Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
+In questa sezione vengono descritti l'architettura ed il funzionamento del sistema di riconoscimento facciale implementato. \\
+Successivamente viene presentato e approfondito il design dell'applicazione web dopo l'integrazione.
 
 	\subsection{Architettura}
-	 Il micro-servizio sviluppato fa uso di diversi servizi messi a disposizione da \gls{AWS}: 
+	 Il micro-servizio sviluppato fa uso di diversi servizi resi disponibili da \gls{AWS}: 
 	 \begin{itemize}
 	 	\item \emph{Amazon Rekognition};
 	 	\item \emph{Amazon S3};
@@ -31,20 +31,20 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 	 \end{itemize}
  	Nei prossimi paragrafi vengono descritti nel dettaglio tali servizi, il loro ruolo all'interno dell'applicativo e come essi collaborino tra loro per il raggiungimento dell'obiettivo.
 	
-	\subsubsection{Amazon Rekognition}
+	\subsubsection{Amazon Rekognition} \label{subsec:rekognition}
 	
 	\emph{Amazon Rekognition} è un software \emph{cloud-based} che mette a disposizione capacità di visione artificiale pre-addestrate e personalizzabili per estrarre informazioni dettagliate da immagini e video. Nel caso del progetto è stato utilizzato per indicizzare le facce e permetterne quindi il riconoscimento. In particolare, tutte le facce sono state salvate all'interno di una raccolta (\emph{collection}) ed a ciascuna di esse è stato assegnato un ID univoco (\emph{faceId}). Per effettuare un riconoscimento si procede ad una ricerca di eventuali corrispondenze all'interno di tale \emph{collection} . \\
-	Di seguito sono elencate le funzioni utilizzate:
+	Di seguito sono elencate e descritte le specifiche funzioni di \emph{Rekognition} utilizzate:
 	\begin{itemize}
-		\item \texttt{DetectFaces}: individua le cento facce di dimensione maggiore presenti nell'immagine. Per ogni viso individuato ne restituisce i dettagli, in particolare la \emph{bounding box};
-		\item \texttt{IndexFaces}: individua i visi all'interno di un'immagine e li aggiunge ad una \emph{collection} specificata. Per questioni di sicurezza \emph{Rekognition} non salva direttamente l'immagine contenente la faccia ma ne salva solamente le caratteristiche che ne permettano il riconoscimento.
+		\item \texttt{DetectFaces}: individua le cento facce di dimensione maggiore presenti nell'immagine. Per ogni viso individuato ne restituisce varie informazioni, in particolare la \emph{bounding box};
+		\item \texttt{IndexFaces}: individua i visi all'interno di un'immagine e li aggiunge ad una \emph{collection} specificata. Per questioni di sicurezza \emph{Rekognition} non salva direttamente l'immagine contenente la faccia ma salva solamente alcune informazioni sulle caratteristiche che ne permettano il riconoscimento.
 		\item \texttt{SearchFacesByImage}: data un'immagine, vengono identificate le facce presenti e successivamente ne vengono cercate delle corrispondenze all'interno di una \emph{collection} specificata.
 		
 	\end{itemize} 
 	
 	\subsubsection{S3}
-	\emph{Amazon Simple Storage Service} (S3) è un servizio di archiviazione oggetti. Al suo interno i dati sono organizzati in \emph{bucket}. All'interno di ogni \emph{bucket} è possibile definire dei prefissi per poter organizzare al meglio gli oggetti caricati (simile al concetto di "cartella"). \\ 
-	Per evitare un passaggio diretto delle immagini tra front-end e back-end si è utilizzato un \emph{bucket}. S3 infatti fornisce la possibilità di generare un URL per effettuare operazioni di \emph{upload} o \emph{download} in una specifica posizione all'interno del \emph{bucket} senza necessità di autenticazione. In particolare viene effettuata la seguente operazione:
+	\emph{Amazon Simple Storage Service} (S3) è un servizio di archiviazione oggetti. Al suo interno i dati sono organizzati in \emph{bucket}. All'interno di ogni \emph{bucket} è possibile definire dei prefissi per poter organizzare al meglio gli oggetti caricati (simile al concetto di ``cartella''). \\ 
+	Per evitare un passaggio diretto delle immagini tra front-end e back-end è stato utilizzato un \emph{bucket}. \emph{S3} infatti fornisce la possibilità di generare un URL per effettuare operazioni di \emph{upload} o \emph{download} in una specifica posizione all'interno del \emph{bucket} senza necessità di autenticazione. In particolare viene effettuata la seguente operazione per la generazione di tale URL:
 
 	\begin{figure}[H]
 		\centering
@@ -55,48 +55,50 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 	Nel codice sopra riportato:
 	\begin{itemize}
 		\item \textbf{Bucket}: nome del \emph{bucket} su cui effettuare l'operazione;
-		\item \textbf{Key}: nome del file che si vuole caricare con il presigned che si ottiene, specificando eventuali prefissi;
-		\item \textbf{ContentType}: tipo del file che si vuole caricare. Nel caso specificato è \emph{image/jpeg}
-		\item \textbf{"putObject"}: tipo di operazione che si vuole effettuare con l'URL generato. In questo caso si 
-		tratta di una PUT.
+		\item \textbf{Key}: nome del file che si vuole caricare con il presigned che si ottiene, specificando eventuali prefissi;`
+		\item \textbf{ContentType}: tipo del file che si vuole caricare. Nel caso delle immagini caricate da MariBa è \emph{image/jpeg};
+		\item \textbf{``putObject''}: tipo di operazione che si vuole effettuare con l'URL generato. In questo caso si 
+		tratta di un'operazione PUT.
 	\end{itemize}
-
 	Le immagini caricate hanno utilità molto breve: infatti una volta che il back-end ne ha effettuato il \emph{download}, 
-	esse non verranno più utilizzate. Di conseguenza, per evitare di lasciare all'interno del \emph{bucket} dell'inutile spazzzatura, è stata impostata una \emph{lifecycle rule} in modo tale che tutte le immagini caricate (con prefisso \emph{img/}) vengano eliminate in modo automatico dopo un giorno dal loro caricamento.
+	esse non verranno più utilizzate. Di conseguenza, per evitare di lasciare all'interno del \emph{bucket} dell'inutile spazzatura, è stata impostata una \emph{lifecycle rule} in modo tale che tutte le immagini caricate (con prefisso \emph{img/}) vengano eliminate in modo automatico dopo un giorno dal loro caricamento.
+	Per informazioni specifiche riguardo alla \emph{lifecycle rule} fare riferimento alla \autoref{subsec:bucketS3}.
 	
-	\subsubsection{AWS Lamda}
-	Di seguito sono descritte le funzioni \emph{Lambda} implementate per la funzionalità di riconoscimento facciale:
+	\subsubsection{AWS Lambda}
+	Di seguito sono descritte le funzioni \emph{Lambda} implementate per il corretto funzionamento della funzionalità di riconoscimento automatico dei giocatori:
 	\begin{itemize}
-		\item \texttt{getPresignedUpload}: richiede il presigned URL per il caricamento dell'immagine;
-		\item \texttt{callRekognition}: effettua il \emph{download} dell'immagine dal \emph{bucket} S3;
+		\item \texttt{getPresignedUpload}: richiede ad \emph{S3} il presigned URL per il caricamento dell'immagine in uno specifico \emph{bucket} e con uno specifico prefisso;
+		\item \texttt{callRekognition}: effettua il \emph{download} dell'immagine dal \emph{bucket} S3 in modo che possa essere utilizzata da \texttt{elaborateImage};
 		\item \texttt{elaborateImage}: effettua le chiamate effettive a \emph{Rekognition}. In particolare:
 			\begin{enumerate}
-				\item Individua e ritaglia i volti nella fotografia utilizzando \texttt{rekognition.IndexFace};
-				\item Per ciascuna delle facce individuate, chiama \texttt{rekognition.SerachFacesByImage} per cercare corrispondenze all'interno della \emph{collection};
-				\item Se sono state trovate delle corrispondenze restituisce il \emph{faceId} più probabile;
-				\item Altrimenti restituisce il crop del viso non riconosciuto.
+				\item Individua i volti nella fotografia utilizzando \texttt{rekognition.DetectFaces}, la quale restituisce le relative \emph{bounding box};
+				\item Ritaglia i volti individuati utilizzando tali \emph{bounding box};
+				\item Per ciascun volto ritagliato chiama \texttt{rekognition.SerachFacesByImage} per cercare eventuali corrispondenze all'interno della \emph{collection} contenente tutti i volti precedentemente salvati;
+				\item Se sono state trovate delle somiglianze vengono restituiti i \emph{faceId} corrispondenti in ordine decrescente di probabilità;
+				\item Per ciascun volto individuato nell'immagine iniziale restituisce le informazioni sulla relativa bounding box. Inoltre, nel caso fossero state trovate corrispondenze, restituisce anche il \emph{faceId}. In caso contrario restituisce invece i crop dei visi non riconosciuti.
 			\end{enumerate}
-		\item \texttt{updatePlayer}: aggiorna un giocatore già presente nel database con il nuovo \emph{faceId} associatogli;
+		\item \texttt{updatePlayer}: aggiorna un giocatore già presente nel database con il nuovo \emph{faceId} nel momento in cui esso viene associato dall'utente;
 		\item \texttt{indexFace}: utilizza \texttt{rekognition.IndexFaces} per indicizzare nuove facce all'interno della \emph{collection} di \emph{Rekognition}.
 	\end{itemize}
 	
 	
 	
 	\subsection{Funzionamento generale}
+	Il funzionamento generale del sistema di riconoscimento tramite immagine è schematizzato in \autoref{fig:funzionamento-rek}.
 	
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=12cm]{immagini/funzionamento.png} \\
-		\caption{\label{fig:funzionamento-rek} Grafico del funzionamento del servizio di image recognition}
+		\caption{\label{fig:funzionamento-rek} Grafico del funzionamento del sistema di image recognition}
 	\end{figure}
 
-	Segue la descrizione della \autoref{fig:funzionamento-rek}:
+	In particolare avvengono le seguenti operazioni:
 	\begin{itemize}
-		\item Il front-end utilizza la funzione \texttt{getPresignedUpload} per ottenere l'URL per il caricamento dell'immagine nel \emph{bucket} di \emph{S3};
+		\item Il front-end utilizza la funzione \texttt{getPresignedUpload} per ottenere l'URL per il caricamento dell'immagine nel \emph{bucket} \emph{S3};
 		\item Una volta ottenuto il link, il front-end procede al caricamento;
 		\item Chiama la funzione \texttt{callRekognition} e attende i dati delle facce individuate e/o riconosciute;
 		\item \texttt{callRekognition} scarica l'immagine dal \emph{bucket} e la passa a \texttt{elaborateImage};
-		\item \texttt{elaborateImage} esegue le chiamate effettive a \emph{Rekognition};
+		\item \texttt{elaborateImage} esegue le chiamate effettive a \emph{Rekognition} come descritte nella \autoref{subsec:rekognition};
 		\item \texttt{elaborateImage} ritorna il risultato dell'elaborazione opportunamente strutturato a \texttt{callRekognition} che a sua volta lo restituisce al front-end;
 		\item Il front-end visualizza i dati ricevuti;
 		
@@ -104,7 +106,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 		\begin{itemize}
 			\item Viene chiamata \texttt{indexFace} per indicizzare il crop del viso non ancora registrato nella \emph{collection} di \emph{Rekognition};
 			\item \texttt{indexFace} restituisce il \emph{faceId} del viso indicizzato; 
-			\item Il nuovo utente viene registrato nel database con il \emph{faceId} ricevuto;
+			\item Viene aggiunto un nuovo record nel database contenente le informazioni del nuovo giocatore, compreso il \emph{faceId} ricevuto;
 		\end{itemize}
 		
 		\item Se viene richiesto di associare un nickname già esistente ad un viso:
@@ -121,7 +123,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 	
 	
 	\subsection{Design dell'interfaccia}
-	Per il design dell'interfaccia, prima della sua effettiva codifica, sono stati realizzati dei \emph{wireframes} utilizzando \textbf{Balsamiq}. In questo modo si è potuto definire il flusso di funzionamento a livello di front-end. \\ 
+	Per il design dell'interfaccia, prima della sua effettiva codifica, sono stati realizzati dei \emph{wireframes} utilizzando \emph{Balsamiq}. In questo modo si è potuto definire il flusso di funzionamento a livello di front-end. \\ 
 
 	\noindent Successivamente, la realizzazione dell'interfaccia è avvenuta utilizzando \emph{Angular 12.x} in combinazione con la libreria 
 	\emph{Nebular}, specifica per lo sviluppo di interfacce utente. \\
@@ -129,7 +131,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 	\noindent Nei paragrafi seguenti viene mostrata l'interfaccia realizzata per l'inserimento dei giocatori attraverso l'utilizzo della funzionalità di riconoscimento.
 	
 		\subsubsection{Inserimento di una nuova partita di calcetto}
-		Nella pagina per l'inizializzazione di una nuova partita di calcetto è stato aggiunto un pulsante per attivare la webcam e scattare la foto  contenente i volti dei giocatori (\autoref{fig:calcetto-1}). Lo scatto viene quindi inviato a \emph{Amazon Rekognition} per il riconoscimento. 
+		Nella pagina per l'inizializzazione di una nuova partita di calcetto è stato aggiunto un pulsante per attivare la webcam e scattare la foto  contenente i volti dei giocatori (\autoref{fig:calcetto-1}). Lo scatto viene quindi inviato a \emph{Amazon Rekognition} per il riconoscimento facciale. 
 		
 		\begin{figure}[H]
 			\centering
@@ -140,7 +142,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 		\noindent Una volta ricevuto il risultato dell'elaborazione, i giocatori vengono visualizzati in card selezionabili per la formazione delle squadre (\autoref{fig:calcetto-2}). I giocatori possono appartenere a tre categorie differenti:
 		\begin{itemize}
 			\item \textbf{Giocatore riconosciuto}: viene mostrato il nickname corrispondente al volto riconosciuto;
-			\item \textbf{Giocatore non riconosciuto ma registrato}: quando selezionato richiede l'associazione del nickname al viso scegliendo tra i nickname già presenti nel database; 
+			\item \textbf{Giocatore non riconosciuto ma registrato}: il giocatore è già registrato ma non ha ancora un volto associato. Quando selezionato richiede l'associazione del nickname al viso scegliendo tra i nickname già presenti nel database;  
 			\item\textbf{Giocatore non riconosciuto e non registrato}: quando selezionato richiede la registrazione di un nuovo giocatore; 
 		\end{itemize}
 	
@@ -153,7 +155,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 			\caption{\label{fig:calcetto-2} Selezione dei giocatori}
 		\end{figure}
 		
-		\noindent Dopo la selezione dei giocatori sarà possibile scambiare i due nickname all'interno di ciascuna squadra per associare loro il ruolo desiderato e formare le squadre definitive (\autoref{fig:calcetto-3}) .
+		\noindent Dopo la selezione dei giocatori sarà inoltre possibile scambiare i due nickname all'interno di ciascuna squadra per associare loro il ruolo desiderato e formare le squadre definitive (\autoref{fig:calcetto-3}) .
 			
 		\begin{figure}[H]
 			\centering
@@ -184,7 +186,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 			\caption{\label{fig:kart-1} Schermata iniziale di Mario Kart}
 		\end{figure}
 		
-		\noindent Una volta ricevuto il risultato dell'elaborazione, i giocatori vengono visualizzati in card selezionabili(\autoref{fig:kart-2}). I giocatori possono appartenere a tre categorie differenti:
+		\noindent Una volta ricevuto il risultato dell'elaborazione, i giocatori vengono visualizzati in card selezionabili (\autoref{fig:kart-2}). I giocatori possono appartenere a tre categorie differenti:
 		\begin{itemize}
 			\item \textbf{Giocatore riconosciuto}: viene mostrato il nickname corrispondente al volto riconosciuto;
 			\item \textbf{Giocatore non riconosciuto ma registrato}: il giocatore è già registrato ma non ha ancora volto associato. Quando selezionato richiede l'associazione del nickname al viso scegliendo tra i nickname già presenti nel database; 

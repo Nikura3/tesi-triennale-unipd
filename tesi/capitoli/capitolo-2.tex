@@ -15,7 +15,7 @@ manualmente. \\
 
 Al fine di rendere più immediato l'inserimento dei dati si vuole evolvere la piattaforma includendo le seguenti funzionalità:
 \begin{itemize}
-	\item Sistema di \emph{image recognition} pe riconoscere i giocatori e ruoli durante la fase di inizializzazione della partita
+	\item Sistema di \emph{image recognition} per riconoscere i giocatori e definire i loro ruoli durante la fase di inizializzazione della partita
 	e formazione delle squadre;
 	\item Servizio vocale per l'inserimento dei risultati dei match giocati.
 \end{itemize}
@@ -31,40 +31,128 @@ Al fine di rendere più immediato l'inserimento dei dati si vuole evolvere la pi
 %**************************************************************
 
 \section{Requisiti}
-Nel primo giorno di stage si è svolto un incontro con il tutor aziendale per definire in modo dettagliato i requisiti. Nel corso dello stage il livello di obbligatorietà di tali requisiti è variato in risposta alle esigenze dell'azienda. \\
- Di seguito viene riportata la versione finale dell'analisi effettuata.
+Nel primo giorno di stage si è svolto un incontro con il tutor aziendale per definire in modo dettagliato i requisiti funzionali dell'applicativo, elencati in \autoref{tab:requisiti}.\\
+Ogni requisito è classificato e identificato univocamente attraverso un codice composto secondo il seguente schema:
+\begin{center}
+	\texttt{R[Priorità]-[Identificativo]}
+\end{center}
+Dove:
+\begin{itemize}
+	\item \textbf{R} indica che si tratta di un requisito;
+	\item \textbf{Priorità} può assumere i seguenti valori:
+	\begin{itemize}
+		\item \textbf{O}: requisito obbligatorio;
+		\item \textbf{D}: requisito desiderabile;
+		\item \textbf{F}: requisito facoltativo.
+	\end{itemize}
+	\item \textbf{Identificativo}: numero progressivo che identifica il requisito in forma gerarchica, strutturato
+	come segue:
+	\begin{center}
+		\texttt{[codicePadre].[codiceFiglio]}
+	\end{center}
+\end{itemize} 
 
-	\subsection{Requisiti obbligatori}
-		Di seguito vengono elencati i requisiti obbligatori:
-		\begin{itemize}
-			\item Sviluppo di un micro-servizio per le attività di \emph{face detection} e \emph{recognition};
-			\item Sviluppo di un micro-servizio per le attività di controllo vocale via web
-		\end{itemize}
-	\subsection{Requisiti desiderabili}
-		Di seguito vengono elencati i requisiti desiderabili:
-		\begin{itemize}
-			\item Integrazione di un nuovo gioco all'interno della piattaforma;
-			\item Implementazione di una versione semplificata per l'inserimento dei dati di Mario Kart per l'utilizzo
-			della piattaforma in occasione del Summit \gls{AWS} di Milano.
-		\end{itemize}
-	\subsection{Requisiti facoltativi}
-		Di seguito vengono elencati i requisiti facoltativi:
-		\begin{itemize}
-			\item Sviluppo di una \gls{skill} Alexa con le stesse funzionalità del \gls{chatbot} vocale richiesto come requisito obbligatorio e integrato sulla piattaforma web.
-		\end{itemize}
+\begin{center}
+	
+	\renewcommand{\arraystretch}{1.5}
+	
+	\centering
+	\begin{longtable}{| C{3cm} | L{8.7cm} |}
+		
+		\hline
+		
+		\rowcolor{lighter-bugBlue}
+		\textbf{Codice} &  \textbf{Descrizione} \\
+		
+		\hline
+		
+		\texttt{RO-1} & Sviluppo della funzionalità di \emph{face detection} e \emph{recognition} per il riconoscimento automatico dei giocatori. \\
+		
+		\hline 
+		
+		\texttt{RO-1.1} & L'utente deve poter utilizzare la webcam per scattare una fotografia ed effettuare il
+		riconoscimento dei giocatori in modo automatico. \\
+		
+		\hline 
+		
+		\texttt{RO-1.2} & L'utente deve poter associare un volto non riconosciuto ad un nickname esistente. \\
+		
+		\hline 
+		
+		\texttt{RO-1.3} & L'utente deve poter creare un nuovo giocatore nel caso non fosse stato riconosciuto dal sistema ed egli non fosse ancora registrato. \\
+		
+		\hline
+		
+		\texttt{RO-1.4} & L'utente deve poter selezionare tra i volti individuati nella fotografia quali siano i giocatori che parteciperanno alla partita. \\
+		
+		\hline 
+		
+		\texttt{RO-1.5} & L'utente deve poter scegliere la formazione delle squadre per le partite a calcetto balilla. \\
+		
+		\hline 
+		
+		\texttt{RO-1.6} & L'utente deve poter utilizzare la funzionalità di predizione del risultato della partita 
+		anche in caso di riconoscimento automatico dei giocatori. \\
+		
+		\hline 
+		
+		\texttt{RO-2} & Sviluppo di un \gls{chatbot} vocale per permettere l'utilizzo dell'applicativo web attraverso la pronuncia delle attività da svolgere. \\
+		
+		\hline 
+		
+		\texttt{RO-2.1} & L'utente deve poter inizializzare una partita utilizzando il \gls{chatbot}. \\
+		
+		\hline 
+		
+		\texttt{RO-2.2} & L'utente deve poter salvare i risultati di una partita utilizzando il \gls{chatbot}. \\
+		
+		\hline
+		
+		\texttt{RD-1} & Sviluppo di una pagina nel sito esistente per l'inserimento dei risultati per il gioco Duck Game. \\
+			
+		\hline 
+		
+		\texttt{RD-1.1} & L'utente può inserire da due a otto giocatori per inizializzare una partita a Duck Game. \\
+		
+		\hline 
+		
+		\texttt{RD-1.2} & L'utente può inserire i risultati di una partita a Duck Game e salvarli nel database. \\
+		
+		\hline 
+		
+		\texttt{RD-1.3} & L'utente può richiedere la predizione del risultato finale della partita a Duck Game. \\	
+			
+		\hline 
+		
+		\texttt{RD-2} & Sviluppo di una versione semplificata della pagina per l'inserimento dei risultati delle 
+		partite a Mario Kart. \\
+		
+		\hline 
+		
+		\texttt{RF-1} & Sviluppo di una \gls{skill} Alexa avente le stesse funzionalità del \gls{chatbot} vocale 
+		richiesto da \texttt{RO-02}. \\
+		
+		\hline 
+		
+		\caption{Requisiti}\label{tab:requisiti}
+	\end{longtable}
+	
+	
+\end{center}
 
 %**************************************************************
 \section{Pianificazione}
 La durata complessiva dello stage è stata di 8 settimane di lavoro a tempo pieno per un totale di circa 320 ore. \\
 
-\noindent Secondo il piano di lavoro iniziale definito con l'azienda, le attività sono distribuite come segue:
+\noindent Secondo il piano di lavoro iniziale definito con l'azienda, le attività sono distribuite come riportato in
+\autoref{tab:pianificazione}.
 
 \begin{center}
 	
 	\renewcommand{\arraystretch}{1.5}
 	
 		\centering
-		\begin{longtable}{| C{2.5cm} | C{2cm} | L{7.2cm} |}
+		\begin{longtable}{| C{2.5cm} | C{2cm} | L{7.2cm} | }
 			
 			\hline
 			
@@ -100,7 +188,7 @@ La durata complessiva dello stage è stata di 8 settimane di lavoro a tempo pien
 			
 			80 & 6, 7 &
 			\begin{itemize}[leftmargin=*]
-				\item Sviluppo della skill Alexa per il controllo vocale e l'aggiornamento dei risultati;
+				\item Sviluppo della \gls{skill} Alexa per il controllo vocale e l'aggiornamento dei risultati;
 				\item Integrazione con la piattaforma esistente. 
 			\end{itemize}  \\
 			
@@ -119,11 +207,12 @@ La durata complessiva dello stage è stata di 8 settimane di lavoro a tempo pien
 			\hline
 		
 			
-			\caption{Pianificazione delle attività}
+			\caption{Pianificazione delle attività}\label{tab:pianificazione}
 		\end{longtable}
 		
 	
 \end{center}
-Durante il periodo di stage in azienda il piano di lavoro ha subito modifiche e di conseguenza la versione finale della pianificazione riportata nel \autoref{cap:conclusioni} diverge da quella qui presentata. Tali modifiche sono state effettuate in risposta alle esigenze e richieste dell'azienda. 
-Durante tutta la durata del tirocinio sono stati effettuati stand-up giornalieri con il tutor aziendale in affiancamento per 
-monitorare lo stato di avanzamento ed evidenziare eventuali problemi sorti.
+Durante il periodo di stage in azienda il piano di lavoro ha subito modifiche e di conseguenza il consuntivo delle attività svolte riportato nel \autoref{cap:conclusioni} diverge dalla pianificazione qui presentata. Tali modifiche sono state effettuate in risposta a esigenze e richieste dell'azienda. \\
+Durante tutta la durata del tirocinio sono stati effettuati stand-up giornalieri con il tutor aziendale per 
+monitorare lo stato di avanzamento ed evidenziare eventuali problemi sorti. \\
+Al termine dello stage si è svolta una presentazione del prodotto realizzato.

@@ -10,7 +10,7 @@
 In questo capitolo viene descritto l'applicativo le cui funzionalità sono state estese durante lo stage.\\
 
 \section{Architettura serverless}
-L'architettura della web app è basata sul \emph{Serverless Framework}, un \gls{framework} che permette di costruire architetture \gls{serverless}. Esso consente inoltre di definire l'architettura \gls{AWS} attraverso un file in formato \gls{YAML}. \\
+L'architettura della web app è basata sul \emph{Serverless Framework} che, come suggerisce il nome, è un \gls{framework} che permette di costruire architetture \gls{serverless}. Esso consente inoltre di definire l'architettura \gls{AWS} (tabelle \emph{DynamoDB}, funzioni \emph{Lambda} e bucket \emph{S3}) attraverso un file in formato \gls{YAML}. \\
  Nei paragrafi seguenti vengono mostrati alcuni esempi della sintassi per la definizione delle infrastrutture necessarie ai nuovi servizi implementati ed il procedimento da seguire per effettuare il \gls{deploy} della struttura \gls{serverless}.
 	\subsection{Definizione delle resources}
 	Attraverso la direttiva \emph{ Resources} è possibile definire le risorse a cui le funzioni \emph{Lambda} possono accedere, ovvero tabelle \emph{DynamoDB} e \emph{bucket S3} .
@@ -27,11 +27,11 @@ L'architettura della web app è basata sul \emph{Serverless Framework}, un \gls{
 			\item \textbf{Type} definisce il tipo di risorsa da creare;
 			\item \textbf{TableName} indica il nome della tabella riportato nei servizi \gls{AWS};
 			\item \textbf{AttributeDefinitions} descrive gli attributi che compongono la chiave primaria;
-			\item \textbf{KeySchema} definisce la struttura della chiave primaria. Nell'esempio la chiave è composta da un solo attributo ma DynamoDB permette di definire anche chiavi più complesse;
+			\item \textbf{KeySchema} definisce la struttura della chiave primaria. Nell'esempio la chiave è composta da un solo attributo ma \emph{DynamoDB} permette di definire anche chiavi più complesse;
 			\item \textbf{ProvisionedThroughput} specifica il numero di letture e scritture permesse della risorsa.
 		\end{itemize}
 
-		\subsubsection{Bucket S3}
+		\subsubsection{Bucket S3} \label{subsec:bucketS3}
 			
 		\begin{figure}[H]
 			\centering
@@ -60,10 +60,14 @@ L'architettura della web app è basata sul \emph{Serverless Framework}, un \gls{
 	Nel codice sopra riportato:
 	\begin{itemize}
 		\item \textbf{handler} è il riferimento al file contenente il codice della funzione; 
-		\item \textbf{events} indica gli eventi che causano l'esecuzione della funzione \emph{Lambda}. Specificando \item \textbf{Http} permette di definire degli \emph{API Gateway} HTTP endpoint che quando chiamati provocano l'esecuzione della funzione;
-		\item \textbf{path} definisce il path dell'endpoint e identifica la risorsa;
-		\item \textbf{method} indica il tipo di accesso HTTP permesso;
-		\item \textbf{cors} abilita le \gls{CORS}.
+		\item \textbf{events} indica gli eventi che causano l'esecuzione della funzione \emph{Lambda}. In particolare permette di specificare:
+		\begin{itemize}
+			\item \textbf{http} definisce gli \emph{API Gateway} HTTP endpoint che quando chiamati provocano l'esecuzione della funzione;
+			\item \textbf{path} definisce il path dell'endpoint e identifica la risorsa;
+			\item \textbf{method} indica il tipo di accesso HTTP permesso;
+			\item \textbf{cors} abilita le \gls{CORS}.
+		\end{itemize}
+		 
 	\end{itemize}
 	
 	\subsection{Deploy del back-end}
@@ -76,15 +80,15 @@ L'architettura della web app è basata sul \emph{Serverless Framework}, un \gls{
 		\texttt{serverless deploy function -f <nome della funzione>}.
 	\end{center}
 
-\section{Web-App}
+\section{Web app}
 La web app è realizzata utilizzando \emph{Angular 12.x} in collaborazione con \emph{Nebular}, libreria per la realizzazione di interfacce utente. \\
-Nei paragrafi successivi vengono descritte le funzionalità disponibili all'interno dell'applicativo, in parte presenti già prima dell'inizio del tirocinio. Viene inoltre mostrato come effettuare il \gls{deploy} delle modifiche effettuate al front-end.
+Nei paragrafi successivi vengono descritte le funzionalità disponibili all'interno dell'applicativo, in parte già presenti prima dell'inizio del tirocinio. Viene inoltre mostrato come effettuare il \gls{deploy} delle modifiche effettuate al front-end.
 	\subsection{Funzionalità disponibili}
 		\paragraph{Salvataggio dei risultati} ~\smallskip 
 		
-		\noindent All'interno dell'applicativo era già presente la possibilità di inserire i risultati delle partite giocate ad uno dei tre giochi disponibili (Mario Kart, Calcetto e Duck Game). 
-		Questi risultati vengono memorizzati all'interno di tabelle DynamoDB dedicate e vengono utilizzati per
-		aggiornare il punteggio Elo dei giocatori che hanno partecipato.
+		\noindent All'interno dell'applicativo era già presente la possibilità di inserire i risultati delle partite giocate a due giochi differenti: Mario Kart e Calcetto. Durante lo stage, l'applicativo è stato esteso includendo la possibilità di caricare i risultati anche per un terzo gioc: Duck Game.
+		Tutti i risultati inseriti vengono memorizzati all'interno di tabelle \emph{DynamoDB} dedicate e vengono utilizzati per
+		aggiornare il punteggio \gls{Elo} dei giocatori che hanno partecipato.
 		
 		\begin{figure}[H]
 			\centering
@@ -94,7 +98,7 @@ Nei paragrafi successivi vengono descritte le funzionalità disponibili all'inte
 		
 		\paragraph{Predizione dei risultati di nuove partite} ~\smallskip 
 		
-		\noindent Nell'applicativo è presente un algoritmo di \emph{Machine Learning} che, utilizzando i punteggi elo dei giocatori partecipanti, è in grado di predire i risultati della partita.
+		\noindent Nell'applicativo viene utilizzato un algoritmo di \emph{Machine Learning} che, sfruttando i punteggi \gls{Elo} dei giocatori partecipanti, è in grado di predire i risultati della partita.
 		Ogni volta che vengono inserite nuove partite, l'algoritmo migliora le proprie predizioni diventando sempre più preciso. 
 		
 		\begin{figure}[H]
@@ -105,8 +109,8 @@ Nei paragrafi successivi vengono descritte le funzionalità disponibili all'inte
 		
 		\paragraph{Visualizzazione delle statistiche} ~\smallskip 
 		
-		\noindent Per ciascun gioco supportato all'interno della web app è presente la pagina \emph{Elo rating}
-		che permette di visualizzare i punteggi Elo di tutti i giocatori. Inoltre, sempre all'interno della stessa 
+		\noindent Per ciascun gioco supportato all'interno della web app è presente la pagina \emph{\gls{Elo} rating}
+		che permette di visualizzare i punteggi \gls{Elo} di tutti i giocatori. Inoltre, sempre all'interno della stessa 
 		pagina viene mostrato un grafico con lo storico di tutti i punteggi per i dieci giocatori più frequenti per 
 		lo specifico gioco scelto.
 		

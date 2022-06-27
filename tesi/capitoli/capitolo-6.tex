@@ -7,7 +7,7 @@
 \label{cap:lex}
 %**************************************************************
 
-In questo capitolo viene approfondito lo sviluppo e l'integrazione del sistema di interazione vocale \\
+In questo capitolo viene approfondito lo sviluppo e l'integrazione del \gls{chatbot} vocale per l'interazione tra l'utente e l'applicativo. \\
 
 %**************************************************************
 
@@ -20,7 +20,7 @@ In particolare viene richiesto:
 	\item \textbf{Calcetto}:
 	\begin{itemize}
 		\item Autogol effettuati da ciascun giocatore;
-		\item Gol effettuati da ciascun ogni giocatore;
+		\item Gol effettuati da ciascun giocatore;
 	\end{itemize}
 	\item \textbf{Mario Kart}:
 	\begin{itemize}
@@ -34,7 +34,7 @@ In particolare viene richiesto:
 	\end{itemize}
 \end{itemize}
 Poiché l'inserimento di questi dati risultava laborioso, è stato richiesto di implementare un \gls{chatbot} vocale 
-che permettesse di inizializzare e salvare le partite giocate.
+che permettesse il salvataggio delle partite giocate.
 \section{Progettazione}
 In questa sezione vengono descritti l'architettura ed il funzionamento del sistema di interazione vocale implementato. \\ 
 Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
@@ -56,15 +56,16 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 		Per ogni \gls{chatbot} di \emph{Lex} possono essere definiti diversi \emph{intent}, ovvero azioni che si
 		vuole portare a termine attraverso l'utilizzo dello stesso. In ciascun \emph{intent} possono essere definiti:
 		\begin{itemize}
-			\item \textbf{Frasi d'esempio}: frasi che l'utente deve comunicare al \gls{chatbot} per richiamare uno
+			\item \textbf{Frasi d'esempio}: frasi che l'utente deve pronunciare al \gls{chatbot} per richiamare uno
 			specifico \emph{intent}. Nella console vengono inserite alcune frasi rappresentative e successivamente \emph{Lex} sarà in grado di comprenderne delle varianti; 
 			\item \textbf{Slot}: variabili a cui il \gls{chatbot} assegnerà un valore sulla base
 			dell'input fornitogli dall'utente. Gli slot sono tipizzati:	\emph{Lex} mette a disposizione alcuni tipi built-in ma permette anche di definire tipi personalizzati;
 			\item \textbf{Flusso della conversazione}: con quale ordine chiedere all'utente il valore degli \emph{slot} necessari e quali frasi usare per farlo.		
 		\end{itemize}
 		
-		\noindent Inoltre, per effettuare delle validazioni sull'input, \emph{Lex} include la possibilità di associare al \gls{chatbot} una \emph{Lambda} da richiamare alla fine di un \emph{intent} oppure ogni volta che viene fornito un valore per uno \emph{slot}. \\
-		Le funzioni di \emph{Lex} utilizzate sono le seguenti:
+		\noindent Inoltre, per effettuare delle validazioni sull'input, \emph{Lex} include la possibilità di associare al \gls{chatbot} una funzione \emph{Lambda} da richiamare alla fine di un \emph{intent} oppure ogni volta che viene fornito un valore per uno \emph{slot}. \\
+		
+		\noindent Per la realizzazione del prodotto sono state utilizzate le seguenti funzioni di \emph{Lex}:
 		\begin{itemize}
 			\item \texttt{RecognizeUtterance}: invia l'input (audio o testo) dell'utente ad \emph{Amazon Lex}. Quest'ultimo interpreta l'input utilizzando i modelli di machine learning costruiti per il \gls{chatbot};
 			
@@ -72,11 +73,9 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 		\end{itemize}
 		
 		\subsubsection{Amazon S3}
-		presigned upload e download, bucket per lo scambio degli audio
-		
 		\emph{Amazon Simple Storage Service} (S3) è un servizio di archiviazione oggetti. Al suo interno i dati sono 
 		organizzati in \emph{bucket}. All'interno di ogni \emph{bucket} è possibile definire dei prefissi per poter 
-		organizzare al meglio gli oggetti caricati (simile al concetto di "cartella"). \\ 
+		organizzare al meglio gli oggetti caricati (simile al concetto di ``cartella''). \\ 
 		Per evitare un passaggio diretto degli audio tra front-end e back-end si è utilizzato un \emph{bucket}. S3 
 		infatti fornisce la possibilità di generare un URL per effettuare operazioni di \emph{upload} o 
 		\emph{download} in una specifica posizione all'interno del \emph{bucket} senza necessità di autenticazione. \\ 
@@ -92,14 +91,14 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 		\begin{itemize}
 			\item \textbf{Bucket}: nome del \emph{bucket} su cui effettuare l'operazione;
 			\item \textbf{Key}: nome del file che si vuole caricare con il presigned che si ottiene, specificando eventuali prefissi;
-			\item \textbf{ContentType}: tipo del file che si vuole caricare. Nel caso specificato è \emph{audio/wav}
-			\item \textbf{"putObject"}: tipo di operazione che si vuole effettuare con l'URL generato. In questo caso si tratta di una PUT.
+			\item \textbf{ContentType}: tipo del file che si vuole caricare. Nel caso degli audio registrati da MariBa, il formato è \emph{audio/wav};
+			\item \textbf{``putObject''}: tipo di operazione che si vuole effettuare con l'URL generato. In questo caso si tratta di un'operazione PUT.
 		\end{itemize}
 		
 		Gli audio caricati hanno utilità molto breve: infatti una volta che il back-end ne ha effettuato il \emph{download}, 
-		essi non verranno più utilizzati. Di conseguenza, per evitare di lasciare all'interno del \emph{bucket} dell'inutile spazzzatura, è stata impostata una \emph{lifecycle rule} in modo tale che tutti gli audio caricati (con prefisso \emph{audio/}) vengano eliminati in modo automatico dopo un giorno dal loro caricamento. \\
+		essi non verranno più utilizzati. Di conseguenza, per evitare di lasciare all'interno del \emph{bucket} dell'inutile spazzatura, è stata impostata una \emph{lifecycle rule} in modo tale che tutti gli audio caricati (con prefisso \emph{audio/}) vengano eliminati in modo automatico dopo un giorno dal loro caricamento. \\
 		
-		\noindent  L'operazione eseguita per generare l'URL per il download è molto simile a quella sopra riportata con la sola differenza che \emph{"putObject"} viene sostituito con \emph{"getObject"}.
+		\noindent  L'operazione eseguita per generare l'URL per il download è molto simile a quella sopra riportata con la sola differenza che \emph{``putObject''} viene sostituito con \emph{``getObject''}.
 	
 		\subsubsection{AWS Lambda}
 		Di seguito sono descritte le funzioni \emph{Lambda} implementate per il funzionamento del \gls{chatbot} \emph{Lex}:
@@ -142,11 +141,11 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 		\item Uno per ciascun dato richiesto nel salvataggio della partita nell'interfaccia grafica di MariBa.
 	\end{itemize}
 	
-	\noindent Pronunciando ad esempio "Voglio registrare una partita a Mario Kart" il \gls{chatbot} capirà l'intenzione
-	dell'utente e inizierà chiedendo quali siano i giocatori partecipanti. Una volta concluso l'inserimento nei
+	\noindent Pronunciando ad esempio ``Voglio registrare una partita a Mario Kart'' il \gls{chatbot} capirà l'intenzione
+	dell'utente e inizierà chiedendo quali siano i giocatori partecipanti. Una volta concluso l'inserimento dei
 	nominativi, verrà richiamato automaticamente il secondo \emph{intent} per permettere l'inserimento dei risultati. \\
 	
-	Il funzionamento generale dell'applicazione è il seguente:
+	\noindent Il funzionamento generale dell'applicazione è riportato nella \autoref{fig:funzionamento-lex} e descritto di seguito.
 	
 	\begin{figure}[H]
 		\centering
@@ -158,17 +157,17 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 		\item L'utente registra un audio attraverso l'apposita interfaccia all'interno del sito MariBa;
 		\item Il front-end utilizza la funzione \texttt{getPresignedUpload} per ottenere l'URL per il caricamento dell'audio nel \emph{bucket} di \emph{S3};
 		\item Una volta ottenuto il link, il front-end procede al caricamento;
-		\item Chiama la funzione \texttt{elaborateImage} e attende il completamento della sua esecuzione;
+		\item Chiama la funzione \texttt{elaborateAudio} e attende il completamento della sua esecuzione;
 		\item \texttt{elaborateAudio} scarica l'audio dal \emph{bucket} e lo invia a \emph{Lex} per l'elaborazione;
 		\item \emph{Lex} utilizza \texttt{maribaBot} per la validazione delle informazioni estratte dall'audio e restituisce a sua volta un audio contenete la risposta generata dal \gls{chatbot};
-		\item \texttt{elaborateAudio} carica la risposta su \emph{S3} e restituisce le informazioni della posizione dell'oggetto nel bucket al front-end;
-		\item Il front-end chiama la funzione \texttt{getPresignedDownloadAudio} per ottenere l'URL per il download dell'audio;
+		\item \texttt{elaborateAudio} carica la risposta su \emph{S3} e restituisce le informazioni sulla posizione dell'oggetto all'interno del \emph{bucket} al front-end;
+		\item Il front-end chiama la funzione \texttt{getPresignedDownloadAudio} per ottenere l'URL per il \emph{download} dell'audio;
 		\item L'audio viene scaricato e viene riprodotto;
-		\item Quando viene confermato il salvataggio di una partita, \texttt{MaribaBot} procede al caricamento nel database dei dati estrapolati dalla conversazione con l'utente utilizzando la corretta funzione \emph{Lambda} a seconda del gioco utilizzato.
+		\item Quando viene confermato il salvataggio di una partita, \texttt{maribaBot} procede al caricamento nel database dei dati estrapolati dalla conversazione con l'utente utilizzando la corretta funzione \emph{Lambda} a seconda del gioco utilizzato.
 	\end{enumerate}
 	
 	\subsection{Design dell'interfaccia}
-	Per il design dell'interfaccia, prima della sua effettiva codifica, sono stati realizzati dei \emph{wireframes} utilizzando \textbf{Balsamiq}. In questo modo si è potuto definire il flusso di funzionamento a livello di front-end. \\ 
+	Per il design dell'interfaccia, prima della sua effettiva codifica, sono stati realizzati dei \emph{wireframes} utilizzando \emph{Balsamiq}. In questo modo si è potuto definire il flusso di funzionamento a livello di front-end. \\ 
 	
 	\noindent Successivamente, la realizzazione dell'interfaccia è avvenuta utilizzando \emph{Angular 12.x} in combinazione con la libreria 
 	\emph{Nebular}, specifica per lo sviluppo di interfacce utente. \\
@@ -204,7 +203,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=1.4cm]{immagini/registrazione.png} \\
-		\caption{\label{fig:registrazione} Stato di registrazione del pulsante}
+		\caption{\label{fig:registrazione} Pulsante nella fase di registrazione}
 	\end{figure}
 	
 	
@@ -212,16 +211,41 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 	
 	\noindent L'applicativo sta procedendo all'invio dell'audio per l'elaborazione. 
 	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1.5cm]{immagini/elaborazione.png} \\
+		\caption{\label{fig:elaborazione} Pulsante nella fase di elaborazione}
+	\end{figure}
+	
 	
 	\paragraph{Riproduzione dell'audio ricevuto da Lex}  ~\smallskip 
 	
 	\noindent L'applicativo sta riproducendo l'audio ricevuto in risposta dal \gls{chatbot}.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1.5cm]{immagini/riproduzione.png} \\
+		\caption{\label{fig:riproduzione} Pulsante nella fase di riproduzione dell'audio}
+	\end{figure}
 	 
 
 	\paragraph{Pronto per la registrazione della risposta}  ~\smallskip 
 	
 	\noindent L'applicativo è pronto per la registrazione da parte dell'utente della prossima interazione con il \gls{chatbot}. 
 	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=2.4cm]{immagini/risposta.png} \\
+		\caption{\label{fig:risposta} Pulsante indica che il chatbot aspetta una risposta dall'utente}
+	\end{figure}
+	
 	\paragraph{Stato di errore} ~\smallskip 
 	
 	\noindent In caso di errore nell'elaborazione dell'audio viene mostrato a schermo un \emph{pop-up}.
+	
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=5cm]{immagini/errore_reg.png} \\
+			\caption{\label{fig:errore-reg} Errore nell'elaborazione dell'audio}
+		\end{figure}
+	
