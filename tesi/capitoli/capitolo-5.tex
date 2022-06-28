@@ -7,7 +7,7 @@
 \label{cap:rekognition}
 %**************************************************************
 
-In questo capitolo viene approfondito lo sviluppo e l'integrazione all'interno dell'applicativo del sistema di image recognition.\\
+In questo capitolo viene approfondito lo sviluppo e l'integrazione del sistema di image recognition all'interno dell'applicativo.\\
 
 %**************************************************************
 
@@ -23,13 +23,13 @@ In questa sezione vengono descritti l'architettura ed il funzionamento del siste
 Successivamente viene presentato e approfondito il design dell'applicazione web dopo l'integrazione.
 
 	\subsection{Architettura}
-	 Il micro-servizio sviluppato fa uso di diversi servizi resi disponibili da \gls{AWS}: 
+	 Il micro-servizio sviluppato fa uso di diverse tecnologie rese disponibili da \gls{AWS}: 
 	 \begin{itemize}
 	 	\item \emph{Amazon Rekognition};
 	 	\item \emph{Amazon S3};
 	 	\item \emph{AWS Lambda}
 	 \end{itemize}
- 	Nei prossimi paragrafi vengono descritti nel dettaglio tali servizi, il loro ruolo all'interno dell'applicativo e come essi collaborino tra loro per il raggiungimento dell'obiettivo.
+ 	Nei prossimi paragrafi vengono descritte nel dettaglio tali tecnologie, il loro ruolo all'interno dell'applicativo e come esse collaborino tra loro per il raggiungimento dell'obiettivo.
 	
 	\subsubsection{Amazon Rekognition} \label{subsec:rekognition}
 	
@@ -44,7 +44,7 @@ Successivamente viene presentato e approfondito il design dell'applicazione web 
 	
 	\subsubsection{S3}
 	\emph{Amazon Simple Storage Service} (S3) è un servizio di archiviazione oggetti. Al suo interno i dati sono organizzati in \emph{bucket}. All'interno di ogni \emph{bucket} è possibile definire dei prefissi per poter organizzare al meglio gli oggetti caricati (simile al concetto di ``cartella''). \\ 
-	Per evitare un passaggio diretto delle immagini tra front-end e back-end è stato utilizzato un \emph{bucket}. \emph{S3} infatti fornisce la possibilità di generare un URL per effettuare operazioni di \emph{upload} o \emph{download} in una specifica posizione all'interno del \emph{bucket} senza necessità di autenticazione. In particolare viene effettuata la seguente operazione per la generazione di tale URL:
+	Per evitare un passaggio diretto delle immagini tra front-end e back-end è stato utilizzato un \emph{bucket}. \emph{S3} infatti fornisce la possibilità di generare un URL per effettuare operazioni di \emph{upload} o \emph{download} in una specifica posizione all'interno di un \emph{bucket} senza necessità di autenticazione. In particolare viene effettuata la seguente operazione per la generazione di tale URL:
 
 	\begin{figure}[H]
 		\centering
@@ -55,13 +55,13 @@ Successivamente viene presentato e approfondito il design dell'applicazione web 
 	Nel codice sopra riportato:
 	\begin{itemize}
 		\item \textbf{Bucket}: nome del \emph{bucket} su cui effettuare l'operazione;
-		\item \textbf{Key}: nome del file che si vuole caricare con il presigned che si ottiene, specificando eventuali prefissi;`
+		\item \textbf{Key}: nome del file che si vuole caricare con il presigned che si ottiene, specificando eventuali prefissi;
 		\item \textbf{ContentType}: tipo del file che si vuole caricare. Nel caso delle immagini caricate da MariBa è \emph{image/jpeg};
 		\item \textbf{``putObject''}: tipo di operazione che si vuole effettuare con l'URL generato. In questo caso si 
 		tratta di un'operazione PUT.
 	\end{itemize}
 	Le immagini caricate hanno utilità molto breve: infatti una volta che il back-end ne ha effettuato il \emph{download}, 
-	esse non verranno più utilizzate. Di conseguenza, per evitare di lasciare all'interno del \emph{bucket} dell'inutile spazzatura, è stata impostata una \emph{lifecycle rule} in modo tale che tutte le immagini caricate (con prefisso \emph{img/}) vengano eliminate in modo automatico dopo un giorno dal loro caricamento.
+	esse non verranno più utilizzate. Di conseguenza, per evitare di occupare spazio all'interno del \emph{bucket} inutilmente, è stata impostata una \emph{lifecycle rule} in modo tale che tutte le immagini (con prefisso \emph{img/}) vengano eliminate in modo automatico dopo un giorno dal loro caricamento.
 	Per informazioni specifiche riguardo alla \emph{lifecycle rule} fare riferimento alla \autoref{subsec:bucketS3}.
 	
 	\subsubsection{AWS Lambda}
@@ -74,8 +74,8 @@ Successivamente viene presentato e approfondito il design dell'applicazione web 
 				\item Individua i volti nella fotografia utilizzando \texttt{rekognition.DetectFaces}, la quale restituisce le relative \emph{bounding box};
 				\item Ritaglia i volti individuati utilizzando tali \emph{bounding box};
 				\item Per ciascun volto ritagliato chiama \texttt{rekognition.SerachFacesByImage} per cercare eventuali corrispondenze all'interno della \emph{collection} contenente tutti i volti precedentemente salvati;
-				\item Se sono state trovate delle somiglianze vengono restituiti i \emph{faceId} corrispondenti in ordine decrescente di probabilità;
-				\item Per ciascun volto individuato nell'immagine iniziale restituisce le informazioni sulla relativa bounding box. Inoltre, nel caso fossero state trovate corrispondenze, restituisce anche il \emph{faceId}. In caso contrario restituisce invece i crop dei visi non riconosciuti.
+				\item Se sono state trovate delle somiglianze, \texttt{rekognition.SearchFacesByImage} restituisce i \emph{faceId} corrispondenti in ordine decrescente di probabilità;
+				\item Per ciascun volto individuato nell'immagine iniziale, \texttt{elaborateImage} restituisce le informazioni sulla relativa bounding box. Inoltre, nel caso fossero state trovate corrispondenze, restituisce anche il \emph{faceId}. In caso contrario restituisce invece i crop dei visi non riconosciuti.
 			\end{enumerate}
 		\item \texttt{updatePlayer}: aggiorna un giocatore già presente nel database con il nuovo \emph{faceId} nel momento in cui esso viene associato dall'utente;
 		\item \texttt{indexFace}: utilizza \texttt{rekognition.IndexFaces} per indicizzare nuove facce all'interno della \emph{collection} di \emph{Rekognition}.
@@ -125,13 +125,13 @@ Successivamente viene presentato e approfondito il design dell'applicazione web 
 	\subsection{Design dell'interfaccia}
 	Per il design dell'interfaccia, prima della sua effettiva codifica, sono stati realizzati dei \emph{wireframes} utilizzando \emph{Balsamiq}. In questo modo si è potuto definire il flusso di funzionamento a livello di front-end. \\ 
 
-	\noindent Successivamente, la realizzazione dell'interfaccia è avvenuta utilizzando \emph{Angular 12.x} in combinazione con la libreria 
-	\emph{Nebular}, specifica per lo sviluppo di interfacce utente. \\
+	\noindent Successivamente, lo sviluppo dell'interfaccia è avvenuto utilizzando \emph{Angular 12.x} in collaborazione con la libreria 
+	\emph{Nebular}, specifica per la creazione di interfacce utente. \\
 	
 	\noindent Nei paragrafi seguenti viene mostrata l'interfaccia realizzata per l'inserimento dei giocatori attraverso l'utilizzo della funzionalità di riconoscimento.
 	
 		\subsubsection{Inserimento di una nuova partita di calcetto}
-		Nella pagina per l'inizializzazione di una nuova partita di calcetto è stato aggiunto un pulsante per attivare la webcam e scattare la foto  contenente i volti dei giocatori (\autoref{fig:calcetto-1}). Lo scatto viene quindi inviato a \emph{Amazon Rekognition} per il riconoscimento facciale. 
+		Nella pagina per l'inizializzazione di una nuova partita di calcetto è stato aggiunto un pulsante per attivare la webcam e scattare la foto  contenente i volti dei giocatori (\autoref{fig:calcetto-1}). Lo scatto viene quindi inviato a \emph{Amazon Rekognition} per effettuare il riconoscimento facciale. 
 		
 		\begin{figure}[H]
 			\centering
@@ -146,7 +146,7 @@ Successivamente viene presentato e approfondito il design dell'applicazione web 
 			\item\textbf{Giocatore non riconosciuto e non registrato}: quando selezionato richiede la registrazione di un nuovo giocatore; 
 		\end{itemize}
 	
-		\noindent Nel caso in cui uno o più giocatori non fossero presenti all'interno della fotografia scattata, è possibile inserirli manualmente. Una volta inserito il nickname desiderato viene mostrata la card corrispondente. \\
+		\noindent Nel caso in cui uno o più giocatori partecipanti non fossero presenti all'interno della fotografia scattata o non fossero stati individuati, è possibile inserirli manualmente: premendo sull'apposito pulsante viene mostrato un pop-up nel quale selezionare il nickname del giocatore da aggiungere. Una volta confermato l'inserimento, viene mostrata la card corrispondente. \\
 		Il numero di giocatori selezionabili per ciascuna squadra è esattamente due. 
 		
 		\begin{figure}[H]
@@ -155,7 +155,7 @@ Successivamente viene presentato e approfondito il design dell'applicazione web 
 			\caption{\label{fig:calcetto-2} Selezione dei giocatori}
 		\end{figure}
 		
-		\noindent Dopo la selezione dei giocatori sarà inoltre possibile scambiare i due nickname all'interno di ciascuna squadra per associare loro il ruolo desiderato e formare le squadre definitive (\autoref{fig:calcetto-3}) .
+		\noindent Dopo la selezione dei giocatori sarà infine possibile scambiare i due nickname all'interno di ciascuna squadra per associare loro il ruolo desiderato e creare la formazione definitiva (\autoref{fig:calcetto-3}).
 			
 		\begin{figure}[H]
 			\centering
@@ -193,7 +193,7 @@ Successivamente viene presentato e approfondito il design dell'applicazione web 
 			\item\textbf{Giocatore non riconosciuto e non registrato}: quando selezionato richiede la registrazione di un nuovo giocatore; 
 		\end{itemize} 
 	
-		\noindent Nel caso in cui uno o più giocatori non fossero presenti all'interno della fotografia scattata, è possibile inserirli manualmente. Una volta inserito il nickname desiderato viene mostrata la card corrispondente.
+		\noindent Nel caso in cui uno o più giocatori partecipanti non fossero presenti all'interno della fotografia scattata o non fossero stati individuati, è possibile inserirli manualmente: premendo sull'apposito pulsante viene mostrato un pop-up nel quale selezionare il nickname del giocatore da aggiungere. Una volta confermato l'inserimento, viene mostrata la card corrispondente. \\
 		
 		\begin{figure}[H]
 			\centering

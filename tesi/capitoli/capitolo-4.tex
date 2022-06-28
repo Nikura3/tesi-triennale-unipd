@@ -62,10 +62,10 @@ L'architettura della web app è basata sul \emph{Serverless Framework} che, come
 		\item \textbf{handler} è il riferimento al file contenente il codice della funzione; 
 		\item \textbf{events} indica gli eventi che causano l'esecuzione della funzione \emph{Lambda}. In particolare permette di specificare:
 		\begin{itemize}
-			\item \textbf{http} definisce gli \emph{API Gateway} HTTP endpoint che quando chiamati provocano l'esecuzione della funzione;
-			\item \textbf{path} definisce il path dell'endpoint e identifica la risorsa;
-			\item \textbf{method} indica il tipo di accesso HTTP permesso;
-			\item \textbf{cors} abilita le \gls{CORS}.
+			\item \textbf{http}: definisce gli \emph{API Gateway} HTTP endpoint che quando chiamati provocano l'esecuzione della funzione;
+			\item \textbf{path}: definisce il path dell'endpoint e identifica la risorsa;
+			\item \textbf{method}: indica il tipo di accesso HTTP permesso;
+			\item \textbf{cors}: abilita le \gls{CORS}.
 		\end{itemize}
 		 
 	\end{itemize}
@@ -86,8 +86,8 @@ Nei paragrafi successivi vengono descritte le funzionalità disponibili all'inte
 	\subsection{Funzionalità disponibili}
 		\paragraph{Salvataggio dei risultati} ~\smallskip 
 		
-		\noindent All'interno dell'applicativo era già presente la possibilità di inserire i risultati delle partite giocate a due giochi differenti: Mario Kart e Calcetto. Durante lo stage, l'applicativo è stato esteso includendo la possibilità di caricare i risultati anche per un terzo gioc: Duck Game.
-		Tutti i risultati inseriti vengono memorizzati all'interno di tabelle \emph{DynamoDB} dedicate e vengono utilizzati per
+		\noindent All'interno dell'applicativo era già presente la possibilità di inserire i risultati delle partite giocate a due giochi differenti: Mario Kart e Calcetto. Durante lo stage, l'applicativo è stato esteso includendo la possibilità di caricare i risultati anche per un terzo gioco: Duck Game.
+		Tutti i risultati inseriti vengono memorizzati all'interno di tabelle \emph{DynamoDB} dedicate e successivamente utilizzati per
 		aggiornare il punteggio \gls{Elo} dei giocatori che hanno partecipato.
 		
 		\begin{figure}[H]
@@ -110,9 +110,8 @@ Nei paragrafi successivi vengono descritte le funzionalità disponibili all'inte
 		\paragraph{Visualizzazione delle statistiche} ~\smallskip 
 		
 		\noindent Per ciascun gioco supportato all'interno della web app è presente la pagina \emph{\gls{Elo} rating}
-		che permette di visualizzare i punteggi \gls{Elo} di tutti i giocatori. Inoltre, sempre all'interno della stessa 
-		pagina viene mostrato un grafico con lo storico di tutti i punteggi per i dieci giocatori più frequenti per 
-		lo specifico gioco scelto.
+		che permette di visualizzare i punteggi \gls{Elo} di tutti i giocatori. Inoltre, all'interno della stessa 
+		pagina, viene mostrato un grafico con lo storico di tutti i punteggi per i dieci giocatori più frequenti nello specifico gioco scelto.
 		
 		\begin{figure}[H]
 			\centering
@@ -128,8 +127,8 @@ Nei paragrafi successivi vengono descritte le funzionalità disponibili all'inte
 		\begin{center}
 			\texttt{ng build}
 		\end{center}
-		\item Utilizzare la console \gls{AWS} per visualizzare il contenuto del bucket in cui è stato eseguito l'hosting del sito;
-		\item Sostituire il contenuto del bucket con i file presenti nella cartella \emph{dist} generata;
+		\item Utilizzare la console \gls{AWS} per visualizzare il contenuto del \emph{bucket} in cui è stato eseguito l'hosting del sito;
+		\item Sostituire il contenuto del \emph{bucket} con i file presenti nella cartella \emph{dist} generata;
 		\item Utilizzare il servizio \gls{CloudFront} per creare un'\emph{invalidation} e comunicare che i
-		contenuti del sito sono cambiati. In questo modo il servizio permetterà di visualizzare le modifiche effettuate.
+		contenuti del sito sono cambiati. In questo modo il servizio renderà visibili le modifiche effettuate.
 	\end{enumerate}

@@ -14,26 +14,26 @@ In questo capitolo viene approfondito lo sviluppo e l'integrazione del \gls{chat
 \section{Presentazione del problema}
 MariBa è una piattaforma per il salvataggio dei risultati delle partite giocate dai dipendenti di \azienda durante le 
 pause pranzo e caffè. \\
-Il caricamento di una nuova partita prevede l'inserimento di molti dati contenenti le informazioni rilevanti alle predizioni delle partite successive. 
+Il salvataggio di una partita conclusa prevede l'inserimento di molti dati contenenti le informazioni rilevanti alle predizioni delle partite successive. 
 In particolare viene richiesto: 
 \begin{itemize}
 	\item \textbf{Calcetto}:
 	\begin{itemize}
-		\item Autogol effettuati da ciascun giocatore;
-		\item Gol effettuati da ciascun giocatore;
+		\item Autogol effettuati da ciascun giocatore (4 campi da compilare);
+		\item Gol effettuati da ciascun giocatore (4 campi da compilare);
 	\end{itemize}
 	\item \textbf{Mario Kart}:
 	\begin{itemize}
-		\item Torneo giocato;
-		\item Posizione finale di ciascun giocatore;
-		\item Punteggio finale di ciascun giocatore.
+		\item Torneo giocato (1 campo da compilare);
+		\item Posizione finale di ciascun giocatore (4 campi da compilare);
+		\item Punteggio finale di ciascun giocatore (4 campi da compilare).
 	\end{itemize}
 	\item \textbf{Duck Game}:
 	\begin{itemize}
-		\item Punteggio di ciascun giocatore.
+		\item Punteggio di ciascun giocatore (da 2 a 8 campi da compilare).
 	\end{itemize}
 \end{itemize}
-Poiché l'inserimento di questi dati risultava laborioso, è stato richiesto di implementare un \gls{chatbot} vocale 
+Poiché l'inserimento risultava laborioso, è stato richiesto di implementare un \gls{chatbot} vocale 
 che permettesse il salvataggio delle partite giocate.
 \section{Progettazione}
 In questa sezione vengono descritti l'architettura ed il funzionamento del sistema di interazione vocale implementato. \\ 
@@ -41,11 +41,11 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 	\subsection{Architettura}
 	Il micro-servizio sviluppato fa uso dei seguenti servizi messi a disposizione da \gls{AWS}:
 	\begin{itemize}
-		\item \emph{Amazon Lex};
+		\item \emph{Amazon Lex v2};
 		\item \emph{Amazon S3};
 		\item \emph{AWS Lambda}.
 	\end{itemize}
-		\subsubsection{Amazon Lex}
+		\subsubsection{Amazon Lex v2}
 		\emph{Amazon Lex} è un servizio di intelligenza artificiale completamente gestito che mette a disposizione 
 		modelli avanzati di linguaggio naturale per permettere lo sviluppo di interfacce di comunicazione all'interno 
 		di applicazioni software. Nel progetto di stage è stata utilizzata la verisone due di \emph{Amazon Lex} per 
@@ -65,7 +65,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 		
 		\noindent Inoltre, per effettuare delle validazioni sull'input, \emph{Lex} include la possibilità di associare al \gls{chatbot} una funzione \emph{Lambda} da richiamare alla fine di un \emph{intent} oppure ogni volta che viene fornito un valore per uno \emph{slot}. \\
 		
-		\noindent Per la realizzazione del prodotto sono state utilizzate le seguenti funzioni di \emph{Lex}:
+		\noindent Infine, per la realizzazione del prodotto, sono state utilizzate le seguenti funzioni di \emph{Amazon Lex}:
 		\begin{itemize}
 			\item \texttt{RecognizeUtterance}: invia l'input (audio o testo) dell'utente ad \emph{Amazon Lex}. Quest'ultimo interpreta l'input utilizzando i modelli di machine learning costruiti per il \gls{chatbot};
 			
@@ -96,7 +96,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 		\end{itemize}
 		
 		Gli audio caricati hanno utilità molto breve: infatti una volta che il back-end ne ha effettuato il \emph{download}, 
-		essi non verranno più utilizzati. Di conseguenza, per evitare di lasciare all'interno del \emph{bucket} dell'inutile spazzatura, è stata impostata una \emph{lifecycle rule} in modo tale che tutti gli audio caricati (con prefisso \emph{audio/}) vengano eliminati in modo automatico dopo un giorno dal loro caricamento. \\
+		essi non verranno più utilizzati.Di conseguenza, per evitare di occupare spazio all'interno del \emph{bucket} inutilmente, è stata impostata una \emph{lifecycle rule} in modo tale che tutte gli audio (con prefisso \emph{audio/}) vengano eliminati in modo automatico dopo un giorno dal loro caricamento. \\
 		
 		\noindent  L'operazione eseguita per generare l'URL per il download è molto simile a quella sopra riportata con la sola differenza che \emph{``putObject''} viene sostituito con \emph{``getObject''}.
 	
@@ -123,6 +123,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 				\item Quando viene effettuato tale controllo, viene tenuto come definitivo il nickname con \gls{distanza di Levenshtein} minore;
 				\item  Nel caso in cui non fossero presenti nel database nickname con \gls{distanza di Levenshtein} minore di tre rispetto a quello inserito, il nickname viene considerato come non valido e lo slot corrispondente viene chiesto nuovamente all'utente.
 			\end{itemize}
+			Inoltre \texttt{maribaBot} utilizza la funzione \texttt{putSession} di \emph{Lex} per creare i \emph{session attributes} (attributi di sessione) all'inizio di ciascuna sessione. Tali attributi sono necessari per la memorizzazione dei dati comunicati al \gls{chatbot} dall'utente e verranno utilizzati alla conclusione della conversazione per il salvataggio della partita.
 		
 			\item \texttt{getPresignedDownloadAudio}: richiede il presigned URL per il download dell'audio da \emph{S3}.
 			
@@ -138,7 +139,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 	Inoltre, sono stati definiti i seguenti slot:
 	\begin{itemize}
 		\item Uno per ciascun giocatore;
-		\item Uno per ciascun dato richiesto nel salvataggio della partita nell'interfaccia grafica di MariBa.
+		\item Uno per ciascun dato richiesto nel salvataggio della partita nell'interfaccia grafica di MariBa (punteggi, posizioni e nome del torneo di Mario Kart).
 	\end{itemize}
 	
 	\noindent Pronunciando ad esempio ``Voglio registrare una partita a Mario Kart'' il \gls{chatbot} capirà l'intenzione
@@ -169,7 +170,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 	\subsection{Design dell'interfaccia}
 	Per il design dell'interfaccia, prima della sua effettiva codifica, sono stati realizzati dei \emph{wireframes} utilizzando \emph{Balsamiq}. In questo modo si è potuto definire il flusso di funzionamento a livello di front-end. \\ 
 	
-	\noindent Successivamente, la realizzazione dell'interfaccia è avvenuta utilizzando \emph{Angular 12.x} in combinazione con la libreria 
+	\noindent Successivamente, la realizzazione dell'interfaccia è avvenuta utilizzando \emph{Angular 12.x} in collaborazione con la libreria 
 	\emph{Nebular}, specifica per lo sviluppo di interfacce utente. \\
 	
 	\noindent Per l'utilizzo del \gls{chatbot} vocale è stato integrato all'interno dell'header del sito un pulsante.
