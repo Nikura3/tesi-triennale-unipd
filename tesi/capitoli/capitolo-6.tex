@@ -48,7 +48,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 		\subsubsection{Amazon Lex v2}
 		\emph{Amazon Lex} è un servizio di intelligenza artificiale completamente gestito che mette a disposizione 
 		modelli avanzati di linguaggio naturale per permettere lo sviluppo di interfacce di comunicazione all'interno 
-		di applicazioni software. Nel progetto di stage è stata utilizzata la verisone due di \emph{Amazon Lex} per 
+		di applicazioni software. Nel progetto di stage è stata utilizzata la versione due di \emph{Amazon Lex} per 
 		implementare un \gls{chatbot} vocale per interagire con l'applicazione e registrare i risultati delle partite 
 		giocate. \\
 		
@@ -69,7 +69,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 		\begin{itemize}
 			\item \texttt{RecognizeUtterance}: invia l'input (audio o testo) dell'utente ad \emph{Amazon Lex}. Quest'ultimo interpreta l'input utilizzando i modelli di machine learning costruiti per il \gls{chatbot};
 			
-			\item \texttt{PutSession}: permette di modificare lo stato della \emph{sessione} creata quando un utente inizia la conversazione con il \gls{chatbot}. Tale sessione è identificata attraverso il \emph{sessionId} (assegnato automaticamente o specificato manualmente). 
+			\item \texttt{PutSession}: permette di modificare lo stato della sessione creata quando un utente inizia la conversazione con il \gls{chatbot}. Tale sessione è identificata attraverso il \emph{sessionId} (assegnato automaticamente o specificato manualmente). 
 		\end{itemize}
 		
 		\subsubsection{Amazon S3}
@@ -77,8 +77,8 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 		organizzati in \emph{bucket}. All'interno di ogni \emph{bucket} è possibile definire dei prefissi per poter 
 		organizzare al meglio gli oggetti caricati (simile al concetto di ``cartella''). \\ 
 		Per evitare un passaggio diretto degli audio tra front-end e back-end si è utilizzato un \emph{bucket}. S3 
-		infatti fornisce la possibilità di generare un URL per effettuare operazioni di \emph{upload} o 
-		\emph{download} in una specifica posizione all'interno del \emph{bucket} senza necessità di autenticazione. \\ 
+		infatti fornisce la possibilità di generare un URL per effettuare operazioni di upload o 
+		download in una specifica posizione all'interno del \emph{bucket} senza necessità di autenticazione. \\ 
 		In particolare, per generare l'URL per l'upload viene effettuata la seguente operazione:
 		
 		\begin{figure}[H]
@@ -95,7 +95,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 			\item \textbf{``putObject''}: tipo di operazione che si vuole effettuare con l'URL generato. In questo caso si tratta di un'operazione PUT.
 		\end{itemize}
 		
-		Gli audio caricati hanno utilità molto breve: infatti una volta che il back-end ne ha effettuato il \emph{download}, 
+		Gli audio caricati hanno utilità molto breve: infatti una volta che il back-end ne ha effettuato il download, 
 		essi non verranno più utilizzati.Di conseguenza, per evitare di occupare spazio all'interno del \emph{bucket} inutilmente, è stata impostata una \emph{lifecycle rule} in modo tale che tutte gli audio (con prefisso \emph{audio/}) vengano eliminati in modo automatico dopo un giorno dal loro caricamento. \\
 		
 		\noindent  L'operazione eseguita per generare l'URL per il download è molto simile a quella sopra riportata con la sola differenza che \emph{``putObject''} viene sostituito con \emph{``getObject''}.
@@ -125,7 +125,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 			\end{itemize}
 			Inoltre \texttt{maribaBot} utilizza la funzione \texttt{putSession} di \emph{Lex} per creare i \emph{session attributes} (attributi di sessione) all'inizio di ciascuna sessione. Tali attributi sono necessari per la memorizzazione dei dati comunicati al \gls{chatbot} dall'utente e verranno utilizzati alla conclusione della conversazione per il salvataggio della partita.
 		
-			\item \texttt{getPresignedDownloadAudio}: richiede il presigned URL per il download dell'audio da \emph{S3}.
+			\item \texttt{getPresignedDownloadAudio}: richiede l'URL per il download dell'audio da \emph{S3}.
 			
 		\end{itemize}
 		
@@ -162,7 +162,7 @@ Inoltre viene presentato il design dell'applicazione web dopo l'integrazione.
 		\item \texttt{elaborateAudio} scarica l'audio dal \emph{bucket} e lo invia a \emph{Lex} per l'elaborazione;
 		\item \emph{Lex} utilizza \texttt{maribaBot} per la validazione delle informazioni estratte dall'audio e restituisce a sua volta un audio contenete la risposta generata dal \gls{chatbot};
 		\item \texttt{elaborateAudio} carica la risposta su \emph{S3} e restituisce le informazioni sulla posizione dell'oggetto all'interno del \emph{bucket} al front-end;
-		\item Il front-end chiama la funzione \texttt{getPresignedDownloadAudio} per ottenere l'URL per il \emph{download} dell'audio;
+		\item Il front-end chiama la funzione \texttt{getPresignedDownloadAudio} per ottenere l'URL per il download dell'audio;
 		\item L'audio viene scaricato e viene riprodotto;
 		\item Quando viene confermato il salvataggio di una partita, \texttt{maribaBot} procede al caricamento nel database dei dati estrapolati dalla conversazione con l'utente utilizzando la corretta funzione \emph{Lambda} a seconda del gioco utilizzato.
 	\end{enumerate}

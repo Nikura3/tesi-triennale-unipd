@@ -44,7 +44,7 @@ Successivamente viene presentato e approfondito il design dell'applicazione web 
 	
 	\subsubsection{S3}
 	\emph{Amazon Simple Storage Service} (S3) è un servizio di archiviazione oggetti. Al suo interno i dati sono organizzati in \emph{bucket}. All'interno di ogni \emph{bucket} è possibile definire dei prefissi per poter organizzare al meglio gli oggetti caricati (simile al concetto di ``cartella''). \\ 
-	Per evitare un passaggio diretto delle immagini tra front-end e back-end è stato utilizzato un \emph{bucket}. \emph{S3} infatti fornisce la possibilità di generare un URL per effettuare operazioni di \emph{upload} o \emph{download} in una specifica posizione all'interno di un \emph{bucket} senza necessità di autenticazione. In particolare viene effettuata la seguente operazione per la generazione di tale URL:
+	Per evitare un passaggio diretto delle immagini tra front-end e back-end è stato utilizzato un \emph{bucket}. \emph{S3} infatti fornisce la possibilità di generare un URL per effettuare operazioni di upload o download in una specifica posizione all'interno di un \emph{bucket} senza necessità di autenticazione. In particolare viene effettuata la seguente operazione per la generazione di tale URL:
 
 	\begin{figure}[H]
 		\centering
@@ -60,7 +60,7 @@ Successivamente viene presentato e approfondito il design dell'applicazione web 
 		\item \textbf{``putObject''}: tipo di operazione che si vuole effettuare con l'URL generato. In questo caso si 
 		tratta di un'operazione PUT.
 	\end{itemize}
-	Le immagini caricate hanno utilità molto breve: infatti una volta che il back-end ne ha effettuato il \emph{download}, 
+	Le immagini caricate hanno utilità molto breve: infatti una volta che il back-end ne ha effettuato il download, 
 	esse non verranno più utilizzate. Di conseguenza, per evitare di occupare spazio all'interno del \emph{bucket} inutilmente, è stata impostata una \emph{lifecycle rule} in modo tale che tutte le immagini (con prefisso \emph{img/}) vengano eliminate in modo automatico dopo un giorno dal loro caricamento.
 	Per informazioni specifiche riguardo alla \emph{lifecycle rule} fare riferimento alla \autoref{subsec:bucketS3}.
 	
@@ -68,7 +68,7 @@ Successivamente viene presentato e approfondito il design dell'applicazione web 
 	Di seguito sono descritte le funzioni \emph{Lambda} implementate per il corretto funzionamento della funzionalità di riconoscimento automatico dei giocatori:
 	\begin{itemize}
 		\item \texttt{getPresignedUpload}: richiede ad \emph{S3} il presigned URL per il caricamento dell'immagine in uno specifico \emph{bucket} e con uno specifico prefisso;
-		\item \texttt{callRekognition}: effettua il \emph{download} dell'immagine dal \emph{bucket} S3 in modo che possa essere utilizzata da \texttt{elaborateImage};
+		\item \texttt{callRekognition}: effettua il download dell'immagine dal \emph{bucket} S3 in modo che possa essere utilizzata da \texttt{elaborateImage};
 		\item \texttt{elaborateImage}: effettua le chiamate effettive a \emph{Rekognition}. In particolare:
 			\begin{enumerate}
 				\item Individua i volti nella fotografia utilizzando \texttt{rekognition.DetectFaces}, la quale restituisce le relative \emph{bounding box};

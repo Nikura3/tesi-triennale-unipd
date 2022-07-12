@@ -13,7 +13,7 @@ In questo capitolo viene descritto l'applicativo le cui funzionalità sono state
 L'architettura della web app è basata sul \emph{Serverless Framework} che, come suggerisce il nome, è un \gls{framework} che permette di costruire architetture \gls{serverless}. Esso consente inoltre di definire l'architettura \gls{AWS} (tabelle \emph{DynamoDB}, funzioni \emph{Lambda} e bucket \emph{S3}) attraverso un file in formato \gls{YAML}. \\
  Nei paragrafi seguenti vengono mostrati alcuni esempi della sintassi per la definizione delle infrastrutture necessarie ai nuovi servizi implementati ed il procedimento da seguire per effettuare il \gls{deploy} della struttura \gls{serverless}.
 	\subsection{Definizione delle resources}
-	Attraverso la direttiva \emph{ Resources} è possibile definire le risorse a cui le funzioni \emph{Lambda} possono accedere, ovvero tabelle \emph{DynamoDB} e \emph{bucket S3} .
+	Attraverso la direttiva \emph{Resources} è possibile definire le risorse a cui le funzioni \emph{Lambda} possono accedere, ovvero tabelle \emph{DynamoDB} e \emph{bucket S3} .
 	
 		\subsubsection{Tabelle DynamoDB}
 		\begin{figure}[H]
@@ -62,8 +62,8 @@ L'architettura della web app è basata sul \emph{Serverless Framework} che, come
 		\item \textbf{handler} è il riferimento al file contenente il codice della funzione; 
 		\item \textbf{events} indica gli eventi che causano l'esecuzione della funzione \emph{Lambda}. In particolare permette di specificare:
 		\begin{itemize}
-			\item \textbf{http}: definisce gli \emph{API Gateway} HTTP endpoint che quando chiamati provocano l'esecuzione della funzione;
-			\item \textbf{path}: definisce il path dell'endpoint e identifica la risorsa;
+			\item \textbf{http}: definisce gli \emph{API Gateway} HTTP endpoint che, quando chiamati, provocano l'esecuzione della funzione;
+			\item \textbf{path}: definisce il percorso dell'endpoint e identifica la risorsa;
 			\item \textbf{method}: indica il tipo di accesso HTTP permesso;
 			\item \textbf{cors}: abilita le \gls{CORS}.
 		\end{itemize}
